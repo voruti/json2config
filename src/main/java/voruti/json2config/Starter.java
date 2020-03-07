@@ -13,7 +13,7 @@ public class Starter {
 
 	private static final String CLASS_NAME = Starter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
-	private static final Level LEVEL = Level.ALL;
+	private static final Level LEVEL = Level.WARNING;
 
 	/**
 	 * @param args

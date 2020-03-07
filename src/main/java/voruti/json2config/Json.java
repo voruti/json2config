@@ -2,7 +2,12 @@ package voruti.json2config;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,9 +54,10 @@ public class Json {
 			sc.close();
 
 			JSONObject jsonObject = new JSONObject(str);
-			LOGGER.log(Level.INFO, "Starting evaluating file {0} with JSONObject {1}",
-					new Object[] { file, jsonObject });
-			auswerten(jsonObject);
+
+//			LOGGER.log(Level.INFO, "Starting evaluating file {0} with JSONObject {1}",
+//					new Object[] { file, jsonObject });
+//			auswerten(jsonObject);
 
 			Iterator<String> ite = jsonObject.keys();
 			while (ite.hasNext()) {
@@ -276,8 +282,41 @@ public class Json {
 	public void printItems() {
 		LOGGER.entering(CLASS_NAME, "printItems");
 
-		for (String key : itemsMap.keySet()) {
-			System.out.println(String.format("%1$-35.35s: %2$s", key, itemsMap.get(key)));
+		if (itemsMap.size() > 0) {
+			List<String> lines = new ArrayList<>();
+
+			for (String key : itemsMap.keySet()) {
+				MyItem item = (MyItem) itemsMap.get(key);
+//			System.out.println(String.format("%1$-35.35s: %2$s", key, item));
+				String line = item.toItemConfig(key);
+				lines.add(line);
+//				System.out.println(line);
+			}
+
+			lines.sort(Comparator.naturalOrder());
+
+			// adding empty lines between:
+			List<String> newLines = new ArrayList<>();
+			String last = lines.get(0).substring(0, 4);
+			for (String line : lines) {
+				String now = line.substring(0, 4);
+				if (!now.equalsIgnoreCase(last)) {
+					newLines.add("");
+				}
+				newLines.add(line);
+
+				last = now;
+			}
+
+			// writing to file:
+			try {
+				Files.write(Paths.get("json.items"), newLines, Charset.defaultCharset());
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "{0} at writing file with lines={1}", new Object[] { e.toString(), newLines });
+				e.printStackTrace();
+			}
+		} else {
+			LOGGER.log(Level.WARNING, "No items to print");
 		}
 
 		LOGGER.exiting(CLASS_NAME, "printItems");
