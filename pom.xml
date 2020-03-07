@@ -28,5 +28,18 @@
 			<artifactId>json</artifactId>
 			<version>20190722</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.smarthome.core/org.eclipse.smarthome.core -->
+		<dependency>
+			<groupId>org.eclipse.smarthome.core</groupId>
+			<artifactId>org.eclipse.smarthome.core</artifactId>
+			<version>0.10.0</version>
+		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>eclipse.smarthome</id>
+			<url>https://repo.eclipse.org/content/repositories/smarthome-releases/</url>
+		</repository>
+	</repositories>
 </project>

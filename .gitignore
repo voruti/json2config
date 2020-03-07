@@ -179,3 +179,6 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/git,java,maven,windows,eclipse
 
 
+*.json
+
+
