@@ -49,7 +49,8 @@ public class MyItem extends PersistedItem {
 	}
 
 	/**
-	 * Uses every field except dimension (it's not used? / within itemType).
+	 * Formats a valid .items-file line. Uses every field except dimension (it's not
+	 * used? / within itemType).
 	 * 
 	 * @param itemName
 	 * @return a item config line
