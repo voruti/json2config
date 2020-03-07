@@ -12,7 +12,7 @@ import org.json.JSONObject;
  * @author U147496
  *
  */
-public class Json{
+public class Json {
 
 	private String prefix;
 
@@ -23,7 +23,7 @@ public class Json{
 	 * @throws FileNotFoundException
 	 * 
 	 */
-	public MyProg() throws FileNotFoundException {
+	public Json() throws FileNotFoundException {
 		prefix = "";
 
 		File file = new File(FILE);
