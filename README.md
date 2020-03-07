@@ -1,6 +1,6 @@
 # JSON2Config
  
-A simple utility program which converts [OpenHAB Items](https://www.openhab.org/docs/configuration/items.html) from [JsonDB Storage](https://www.openhab.org/docs/administration/jsondb.html) files (e.g. org.eclipse.smarthome.core.items.Item.json) to textual configuration files (e.g. my.items).
+A simple utility program which converts [openHAB Items](https://www.openhab.org/docs/configuration/items.html) from [JsonDB Storage](https://www.openhab.org/docs/administration/jsondb.html) files (e.g. org.eclipse.smarthome.core.items.Item.json) to textual configuration files (e.g. my.items).
 
 ## Usage
 
