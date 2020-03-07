@@ -2,6 +2,7 @@ package voruti.json2config;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.smarthome.core.items.ManagedItemProvider.PersistedItem;
@@ -20,6 +21,7 @@ public class MyItem extends PersistedItem {
 	 */
 	public MyItem(String itemType) {
 		super(itemType);
+		LOGGER.log(Level.FINE, "{0} constructed", this);
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class MyItem extends PersistedItem {
 	}
 
 	/**
-	 * Uses every field except dimension (it's not used?).
+	 * Uses every field except dimension (it's not used? / within itemType).
 	 * 
 	 * @param itemName
 	 * @return a item config line

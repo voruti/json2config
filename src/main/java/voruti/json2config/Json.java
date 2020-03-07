@@ -35,13 +35,13 @@ public class Json {
 	private Map<String, PersistedItem> itemsMap;
 	private String prefix;
 
-	public Json(String fileName) {
-		LOGGER.entering(CLASS_NAME, "<init>", fileName);
+	public Json(String jsonFile, String itemsFile) {
+		LOGGER.entering(CLASS_NAME, "<init>", jsonFile);
 
 		itemsMap = new HashMap<>();
 		prefix = "";
 
-		File file = new File(fileName);
+		File file = new File(jsonFile);
 		Scanner sc;
 		try {
 			sc = new Scanner(file);
@@ -75,7 +75,7 @@ public class Json {
 				itemsMap.put(key, item);
 			}
 
-			printItems();
+			writeItems(itemsFile);
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "File can not be opened!", file);
 			e.printStackTrace();
@@ -85,7 +85,7 @@ public class Json {
 	}
 
 	/**
-	 * Goes through the whole {@link JSONObject} in "tree form".
+	 * Go through the whole {@link JSONObject} in "tree form".
 	 * 
 	 * @param jso the {@link JSONObject}
 	 */
@@ -279,18 +279,23 @@ public class Json {
 		return item;
 	}
 
-	public void printItems() {
-		LOGGER.entering(CLASS_NAME, "printItems");
+	/**
+	 * Writes the items into file {@code itemsFile}.
+	 * 
+	 * @param itemsFile the file to write to
+	 */
+	public void writeItems(String itemsFile) {
+		LOGGER.entering(CLASS_NAME, "writeItems");
 
 		if (itemsMap.size() > 0) {
 			List<String> lines = new ArrayList<>();
 
 			for (String key : itemsMap.keySet()) {
 				MyItem item = (MyItem) itemsMap.get(key);
-//			System.out.println(String.format("%1$-35.35s: %2$s", key, item));
+				LOGGER.log(Level.FINE, "Generating line for {0}", String.format("%1$s: %2$s", key, item));
 				String line = item.toItemConfig(key);
+				LOGGER.log(Level.INFO, "Created line=[{0}]", line);
 				lines.add(line);
-//				System.out.println(line);
 			}
 
 			lines.sort(Comparator.naturalOrder());
@@ -310,7 +315,8 @@ public class Json {
 
 			// writing to file:
 			try {
-				Files.write(Paths.get("json.items"), newLines, Charset.defaultCharset());
+				LOGGER.log(Level.INFO, "Writing lines to file={0}", itemsFile);
+				Files.write(Paths.get(itemsFile), newLines, Charset.defaultCharset());
 			} catch (IOException e) {
 				LOGGER.log(Level.SEVERE, "{0} at writing file with lines={1}", new Object[] { e.toString(), newLines });
 				e.printStackTrace();
@@ -319,7 +325,7 @@ public class Json {
 			LOGGER.log(Level.WARNING, "No items to print");
 		}
 
-		LOGGER.exiting(CLASS_NAME, "printItems");
+		LOGGER.exiting(CLASS_NAME, "writeItems");
 	}
 
 }
