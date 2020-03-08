@@ -26,12 +26,10 @@ import org.json.JSONObject;
  */
 public class Converter {
 
-	private static final String SEPARATOR = "    ";
 	private static final String CLASS_NAME = Converter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
 
 	private Map<String, Item> itemsMap;
-	private String prefix;
 
 	/**
 	 * Converts {@code jsonFile} to {@code itemsFile}.
@@ -43,7 +41,6 @@ public class Converter {
 		LOGGER.entering(CLASS_NAME, "<init>", jsonFile);
 
 		itemsMap = new HashMap<>();
-		prefix = "";
 
 		File file = new File(jsonFile);
 		Scanner sc;
@@ -58,10 +55,6 @@ public class Converter {
 			sc.close();
 
 			JSONObject jsonObject = new JSONObject(str);
-
-//			LOGGER.log(Level.INFO, "Starting evaluating file {0} with JSONObject {1}",
-//					new Object[] { file, jsonObject });
-//			auswerten(jsonObject);
 
 			Iterator<String> ite = jsonObject.keys();
 			while (ite.hasNext()) {
@@ -86,44 +79,6 @@ public class Converter {
 		}
 
 		LOGGER.exiting(CLASS_NAME, "<init>");
-	}
-
-	/**
-	 * Go through the whole {@link JSONObject} in "tree form".
-	 * 
-	 * @param jso the {@link JSONObject}
-	 */
-	public void auswerten(JSONObject jso) {
-		LOGGER.entering(CLASS_NAME, "auswerten", jso);
-
-		Iterator<String> ite = jso.keys();
-		while (ite.hasNext()) {
-			String key = ite.next();
-			Object val = jso.get(key);
-			if (val instanceof JSONObject) {
-				LOGGER.log(Level.INFO, "Found another JSONObject {0}: recursion", val);
-				System.out.println(prefix + key + "=");
-
-				prefix += SEPARATOR;
-				auswerten((JSONObject) val);
-				prefix = prefix.substring(0, prefix.length() - SEPARATOR.length());
-			} else if (val instanceof JSONArray) {
-				LOGGER.log(Level.INFO, "Found a JSONArray {0}", val);
-				System.out.println(prefix + key + " (JSONArray):");
-
-				prefix += SEPARATOR;
-				for (Object obj : (JSONArray) val) {
-					LOGGER.log(Level.FINE, "Printing array value {0}", obj);
-					System.out.println(prefix + obj + " - " + obj.getClass().getSimpleName());
-				}
-				prefix = prefix.substring(0, prefix.length() - SEPARATOR.length());
-			} else {
-				LOGGER.log(Level.FINE, "Printing plain value {0}", val);
-				System.out.println(prefix + key + ": " + val + " - " + val.getClass().getSimpleName());
-			}
-		}
-
-		LOGGER.exiting(CLASS_NAME, "auswerten");
 	}
 
 	/**
