@@ -83,7 +83,7 @@ public class Starter {
 		// start:
 		LOGGER.log(Level.INFO, "Starting program with jsonFile={0}, itemsFile={1}",
 				new Object[] { jsonFile, itemsFile });
-		new Json(jsonFile, itemsFile);
+		new Converter(jsonFile, itemsFile);
 	}
 
 }

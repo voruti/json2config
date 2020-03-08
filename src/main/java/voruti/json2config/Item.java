@@ -11,15 +11,15 @@ import org.eclipse.smarthome.core.items.ManagedItemProvider.PersistedItem;
  * @author voruti
  *
  */
-public class MyItem extends PersistedItem {
+public class Item extends PersistedItem {
 
-	private static final String CLASS_NAME = Json.class.getName();
+	private static final String CLASS_NAME = Converter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
 
 	/**
 	 * @param itemType
 	 */
-	public MyItem(String itemType) {
+	public Item(String itemType) {
 		super(itemType);
 		LOGGER.log(Level.FINE, "{0} constructed", this);
 	}

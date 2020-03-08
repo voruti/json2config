@@ -24,13 +24,13 @@ import org.json.JSONObject;
 /**
  * @author voruti
  */
-public class Json {
+public class Converter {
 
 	private static final String SEPARATOR = "    ";
-	private static final String CLASS_NAME = Json.class.getName();
+	private static final String CLASS_NAME = Converter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
 
-	private Map<String, MyItem> itemsMap;
+	private Map<String, Item> itemsMap;
 	private String prefix;
 
 	/**
@@ -39,7 +39,7 @@ public class Json {
 	 * @param jsonFile  path to file (input)
 	 * @param itemsFile path to file (output)
 	 */
-	public Json(String jsonFile, String itemsFile) {
+	public Converter(String jsonFile, String itemsFile) {
 		LOGGER.entering(CLASS_NAME, "<init>", jsonFile);
 
 		itemsMap = new HashMap<>();
@@ -74,7 +74,7 @@ public class Json {
 				}
 				JSONObject val = (JSONObject) o;
 
-				MyItem item = createItem(val);
+				Item item = createItem(val);
 				LOGGER.log(Level.INFO, "Adding item={0} to itemsMap", item);
 				itemsMap.put(key, item);
 			}
@@ -130,9 +130,9 @@ public class Json {
 	 * Creates a {@link {@link JSONObject}} out of a {@link JSONObject}.
 	 * 
 	 * @param content the {@link JSONObject}
-	 * @return the item as {@link MyItem}
+	 * @return the item as {@link Item}
 	 */
-	public MyItem createItem(JSONObject content) {
+	public Item createItem(JSONObject content) {
 		LOGGER.entering(CLASS_NAME, "createItem", content);
 
 		String itemType = "";
@@ -275,7 +275,7 @@ public class Json {
 			}
 		}
 
-		MyItem item = new MyItem(itemType);
+		Item item = new Item(itemType);
 		item.category = category;
 		item.label = label;
 		item.baseItemType = baseItemType;
@@ -301,7 +301,7 @@ public class Json {
 			List<String> lines = new ArrayList<>();
 
 			for (String key : itemsMap.keySet()) {
-				MyItem item = itemsMap.get(key);
+				Item item = itemsMap.get(key);
 				LOGGER.log(Level.FINE, "Generating line for {0}", String.format("%1$s: %2$s", key, item));
 				String line = item.toItemConfig(key);
 				LOGGER.log(Level.INFO, "Created line=[{0}]", line);
