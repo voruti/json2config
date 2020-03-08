@@ -15,7 +15,7 @@ public class Starter {
 
 	private static final String CLASS_NAME = Starter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
-	private static final Level LEVEL = Level.ALL;
+	private static final Level LEVEL = Level.WARNING;
 
 	private static final String DEFAULT_JSONFILE = "org.eclipse.smarthome.core.items.Item.json";
 	private static final String DEFAULT_ITEMSFILE = "json.items";
@@ -24,17 +24,7 @@ public class Starter {
 		// logging:
 		System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF_%1$tT][%2$-40.40s][%4$13.13s]: %5$s%n");
 		LOGGER.getParent().setLevel(LEVEL);
-		LOGGER.getParent().getHandlers()[0].setLevel(Level.SEVERE);
-		FileHandler fileHandler;
-		try {
-			fileHandler = new FileHandler("latest.log");
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-			return;
-		}
-		fileHandler.setLevel(LEVEL);
-		fileHandler.setFormatter(new SimpleFormatter());
-		LOGGER.getParent().addHandler(fileHandler);
+		LOGGER.getParent().getHandlers()[0].setLevel(LEVEL);
 
 		// args evaluating:
 		boolean inNext = false;
@@ -70,6 +60,25 @@ public class Starter {
 					}
 					break;
 
+				case "-l":
+				case "--log":
+				case "--enable-logging":
+					LOGGER.getParent().setLevel(Level.ALL);
+					LOGGER.getParent().getHandlers()[0].setLevel(Level.INFO);
+
+					// logging to file:
+					FileHandler fileHandler;
+					try {
+						fileHandler = new FileHandler("latest.log");
+					} catch (SecurityException | IOException e) {
+						e.printStackTrace();
+						return;
+					}
+					fileHandler.setLevel(Level.ALL);
+					fileHandler.setFormatter(new SimpleFormatter());
+					LOGGER.getParent().addHandler(fileHandler);
+					break;
+
 				default:
 					printHelp = true;
 					break loop;
@@ -78,7 +87,7 @@ public class Starter {
 		}
 		if (printHelp) {
 			LOGGER.log(Level.WARNING, "Wrong parameter usage");
-			System.out.println("Usage: JSON2Config.jar [--in <path>] [--out <path>]");
+			System.out.println("Usage: JSON2Config.jar [--in <path>] [--out <path>] [--log]");
 			return;
 		}
 
