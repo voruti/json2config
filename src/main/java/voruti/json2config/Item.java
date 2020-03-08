@@ -11,7 +11,7 @@ import org.eclipse.smarthome.core.items.ManagedItemProvider.PersistedItem;
  * @author voruti
  *
  */
-public class Item extends PersistedItem {
+public class Item extends PersistedItem implements IConvertible {
 
 	private static final String CLASS_NAME = Converter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
@@ -52,11 +52,12 @@ public class Item extends PersistedItem {
 	 * Formats a valid .items-file line. Uses every field except dimension (it's not
 	 * used? / within itemType).
 	 * 
-	 * @param itemName
+	 * @param name the name of the item
 	 * @return a item config line
 	 */
-	public String toItemConfig(String itemName) {
-		LOGGER.entering(CLASS_NAME, "toItemConfig", itemName);
+	@Override
+	public String toConfigLine(String name) {
+		LOGGER.entering(CLASS_NAME, "toConfigLine", name);
 
 		String baseItemTypeString = "";
 		if (!baseItemType.equalsIgnoreCase("")) {
@@ -132,9 +133,9 @@ public class Item extends PersistedItem {
 			tagsString += "]";
 		}
 
-		String output = String.format("%-30s %-40s %-20s %-20s %-20s %-20s", beginString, itemName, labelString,
+		String output = String.format("%-30s %-40s %-20s %-20s %-20s %-20s", beginString, name, labelString,
 				categoryString, groupNamesString, tagsString).trim();
-		LOGGER.exiting(CLASS_NAME, "toItemConfig", output);
+		LOGGER.exiting(CLASS_NAME, "toConfigLine", output);
 		return output;
 	}
 

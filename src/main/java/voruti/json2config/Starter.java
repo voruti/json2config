@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import voruti.json2config.Converter.Type;
+
 /**
  * @author voruti
  */
@@ -83,7 +85,7 @@ public class Starter {
 		// start:
 		LOGGER.log(Level.INFO, "Starting program with jsonFile={0}, itemsFile={1}",
 				new Object[] { jsonFile, itemsFile });
-		new Converter(jsonFile, itemsFile);
+		new Converter(jsonFile, itemsFile, Type.ITEM);
 	}
 
 }

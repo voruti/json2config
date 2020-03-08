@@ -26,21 +26,24 @@ import org.json.JSONObject;
  */
 public class Converter {
 
+	public enum Type {
+		ITEM, THING
+	}
+
 	private static final String CLASS_NAME = Converter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
 
-	private Map<String, Item> itemsMap;
-
 	/**
-	 * Converts {@code jsonFile} to {@code itemsFile}.
+	 * Converts {@code jsonFile} to {@code outputFile}.
 	 * 
-	 * @param jsonFile  path to file (input)
-	 * @param itemsFile path to file (output)
+	 * @param jsonFile   path to file (input)
+	 * @param outputFile path to file (output)
+	 * @param type       type of file to convert
 	 */
-	public Converter(String jsonFile, String itemsFile) {
+	public Converter(String jsonFile, String outputFile, Type type) {
 		LOGGER.entering(CLASS_NAME, "<init>", jsonFile);
 
-		itemsMap = new HashMap<>();
+		Map<String, IConvertible> convertibleMap = new HashMap<>();
 
 		File file = new File(jsonFile);
 		Scanner sc;
@@ -69,10 +72,14 @@ public class Converter {
 
 				Item item = createItem(val);
 				LOGGER.log(Level.INFO, "Adding item={0} to itemsMap", item);
-				itemsMap.put(key, item);
+				convertibleMap.put(key, item);
 			}
 
-			writeItems(itemsFile);
+			// get lines from map:
+			List<String> lines = convertibleMapToLines(convertibleMap);
+
+			// write file:
+			writeLinesToFile(lines, outputFile);
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "File can not be opened!", file);
 			e.printStackTrace();
@@ -245,20 +252,24 @@ public class Converter {
 	}
 
 	/**
-	 * Writes the items into file {@code itemsFile}.
+	 * Converts the {@code map} with objects of {@link IConvertible} implementing
+	 * classes into {@link String} lines in form of a {@link List}.
 	 * 
-	 * @param itemsFile the file to write to
+	 * @param map the map to convert
+	 * @return a {@link List} with all lines as {@link String Strings}
 	 */
-	public void writeItems(String itemsFile) {
-		LOGGER.entering(CLASS_NAME, "writeItems");
+	public List<String> convertibleMapToLines(Map<String, IConvertible> map) {
+		LOGGER.entering(CLASS_NAME, "convertibleMapToLines", map);
 
-		if (itemsMap.size() > 0) {
+		List<String> newLines = new ArrayList<>();
+
+		if (map.size() > 0) {
 			List<String> lines = new ArrayList<>();
 
-			for (String key : itemsMap.keySet()) {
-				Item item = itemsMap.get(key);
-				LOGGER.log(Level.FINE, "Generating line for {0}", String.format("%1$s: %2$s", key, item));
-				String line = item.toItemConfig(key);
+			for (String key : map.keySet()) {
+				IConvertible conv = map.get(key);
+				LOGGER.log(Level.FINE, "Generating line for {0}", String.format("%1$s: %2$s", key, conv));
+				String line = conv.toConfigLine(key);
 				LOGGER.log(Level.INFO, "Created line=[{0}]", line);
 				lines.add(line);
 			}
@@ -266,7 +277,6 @@ public class Converter {
 			lines.sort(Comparator.naturalOrder());
 
 			// adding empty lines between:
-			List<String> newLines = new ArrayList<>();
 			String last = lines.get(0).substring(0, 4);
 			for (String line : lines) {
 				String now = line.substring(0, 4);
@@ -277,20 +287,40 @@ public class Converter {
 
 				last = now;
 			}
-
-			// writing to file:
-			try {
-				LOGGER.log(Level.INFO, "Writing lines to file={0}", itemsFile);
-				Files.write(Paths.get(itemsFile), newLines, Charset.defaultCharset());
-			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, "{0} at writing file with lines={1}", new Object[] { e.toString(), newLines });
-				e.printStackTrace();
-			}
 		} else {
-			LOGGER.log(Level.WARNING, "No items to print");
+			LOGGER.log(Level.WARNING, "No objects in map={0}", map);
 		}
 
-		LOGGER.exiting(CLASS_NAME, "writeItems");
+		LOGGER.exiting(CLASS_NAME, "convertibleMapToLines", newLines);
+		return newLines;
+	}
+
+	/**
+	 * Writes every entry of {@code lines} in a separate line to {@code fileName}.
+	 * 
+	 * @param lines    the lines to write into the file
+	 * @param fileName the file name of the file to write
+	 * @return {@code true} if the writing operation was successful, {@code false}
+	 *         otherwise
+	 */
+	public boolean writeLinesToFile(List<String> lines, String fileName) {
+		LOGGER.entering(CLASS_NAME, "writeLinesToFile", fileName);
+
+		boolean returnVal;
+
+		// writing to file:
+		try {
+			LOGGER.log(Level.INFO, "Writing lines to file={0}", fileName);
+			Files.write(Paths.get(fileName), lines, Charset.defaultCharset());
+			returnVal = true;
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "{0} at writing file with lines={1}", new Object[] { e.toString(), lines });
+			e.printStackTrace();
+			returnVal = false;
+		}
+
+		LOGGER.exiting(CLASS_NAME, "writeLinesToFile", returnVal);
+		return returnVal;
 	}
 
 }
