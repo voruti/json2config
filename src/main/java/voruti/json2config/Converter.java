@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -45,20 +46,9 @@ public class Converter {
 
 		Map<String, IConvertible> convertibleMap = new HashMap<>();
 
-		File file = new File(jsonFile);
-		Scanner sc;
-		try {
-			sc = new Scanner(file);
-
-			LOGGER.log(Level.INFO, "Reading lines of file {0}", file);
-			String str = "";
-			while (sc.hasNextLine()) {
-				str += sc.nextLine();
-			}
-			sc.close();
-
-			JSONObject jsonObject = new JSONObject(str);
-
+		JSONObject jsonObject = openFileToJSONObject(jsonFile);
+		if (jsonObject != null) {
+			
 			Iterator<String> ite = jsonObject.keys();
 			while (ite.hasNext()) {
 				String key = ite.next();
@@ -80,12 +70,50 @@ public class Converter {
 
 			// write file:
 			writeLinesToFile(lines, outputFile);
-		} catch (FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "File can not be opened!", file);
-			e.printStackTrace();
+			
+		} else {
+			LOGGER.log(Level.SEVERE, "jsonObject is null");
 		}
 
 		LOGGER.exiting(CLASS_NAME, "<init>");
+	}
+
+	/**
+	 * Opens and reads file {@code fileName} and returns it content as
+	 * {@link JSONObject}.
+	 * 
+	 * @param fileName the file to open and read
+	 * @return the {@link JSONObject} containing the content of the file, if it
+	 *         could be successfully opened, otherwise {@code null}
+	 */
+	public JSONObject openFileToJSONObject(String fileName) {
+		LOGGER.entering(CLASS_NAME, "openFileToJSONObject", fileName);
+
+		JSONObject jsonObject = null;
+
+		File file = new File(fileName);
+		String str = "";
+		Scanner sc;
+		try {
+			sc = new Scanner(file);
+
+			LOGGER.log(Level.INFO, "Reading lines of file={0} with Scanner={1}", new Object[] { file, sc });
+			while (sc.hasNextLine()) {
+				str += sc.nextLine();
+			}
+			sc.close();
+
+			jsonObject = new JSONObject(str);
+		} catch (JSONException eJ) {
+			LOGGER.log(Level.SEVERE, "File content={0} can not be parsed to JSONObject", str);
+			eJ.printStackTrace();
+		} catch (FileNotFoundException eF) {
+			LOGGER.log(Level.SEVERE, "File can not be opened!", file);
+			eF.printStackTrace();
+		}
+
+		LOGGER.exiting(CLASS_NAME, "openFileToJSONObject", jsonObject);
+		return jsonObject;
 	}
 
 	/**
