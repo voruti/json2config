@@ -13,7 +13,7 @@ import org.eclipse.smarthome.core.items.ManagedItemProvider.PersistedItem;
  */
 public class Item extends PersistedItem implements IConvertible {
 
-	private static final String CLASS_NAME = Converter.class.getName();
+	private static final String CLASS_NAME = Item.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
 
 	/**

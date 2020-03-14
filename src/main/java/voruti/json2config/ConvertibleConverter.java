@@ -25,13 +25,13 @@ import org.json.JSONObject;
 /**
  * @author voruti
  */
-public class Converter {
+public class ConvertibleConverter {
 
 	public enum Type {
 		ITEM, THING
 	}
 
-	private static final String CLASS_NAME = Converter.class.getName();
+	private static final String CLASS_NAME = ConvertibleConverter.class.getName();
 	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
 
 	/**
@@ -41,7 +41,7 @@ public class Converter {
 	 * @param outputFile path to file (output)
 	 * @param type       type of file to convert
 	 */
-	public Converter(String jsonFile, String outputFile, Type type) {
+	public ConvertibleConverter(String jsonFile, String outputFile, Type type) {
 		LOGGER.entering(CLASS_NAME, "<init>", jsonFile);
 
 		// gets the jsonObject:
