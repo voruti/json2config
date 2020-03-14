@@ -133,7 +133,7 @@ public class Converter {
 					break;
 				}
 
-				LOGGER.log(Level.INFO, "Adding IConvertible={0} to itemsMap", iconv);
+				LOGGER.log(Level.INFO, "Adding IConvertible={0} to convertiblesMap", iconv);
 				returnVal.put(key, iconv);
 			}
 		} else {

@@ -18,7 +18,7 @@ public class Starter {
 	private static final Level LEVEL = Level.WARNING;
 
 	private static final String DEFAULT_JSONFILE = "org.eclipse.smarthome.core.items.Item.json";
-	private static final String DEFAULT_ITEMSFILE = "json.items";
+	private static final String DEFAULT_OUTFILE = "json.items";
 
 	public static void main(String[] args) {
 		// logging:
@@ -32,15 +32,15 @@ public class Starter {
 		boolean printHelp = false;
 
 		String jsonFile = DEFAULT_JSONFILE;
-		String itemsFile = DEFAULT_ITEMSFILE;
+		String outFile = DEFAULT_OUTFILE;
 		loop: for (int i = 0; i < args.length; i++) {
 			if (inNext) {
 				jsonFile = args[i];
 				LOGGER.log(Level.INFO, "Using jsonFile={0}", jsonFile);
 				inNext = false;
 			} else if (outNext) {
-				itemsFile = args[i];
-				LOGGER.log(Level.INFO, "Using itemsFile={0}", itemsFile);
+				outFile = args[i];
+				LOGGER.log(Level.INFO, "Using outFile={0}", outFile);
 				outNext = false;
 			} else {
 				switch (args[i]) {
@@ -93,9 +93,9 @@ public class Starter {
 
 		// start:
 		Type type = Type.ITEM;
-		LOGGER.log(Level.INFO, "Starting program with jsonFile={0}, itemsFile={1}, type={2}",
-				new Object[] { jsonFile, itemsFile, type });
-		new Converter(jsonFile, itemsFile, type);
+		LOGGER.log(Level.INFO, "Starting program with jsonFile={0}, outFile={1}, type={2}",
+				new Object[] { jsonFile, outFile, type });
+		new Converter(jsonFile, outFile, type);
 	}
 
 }
