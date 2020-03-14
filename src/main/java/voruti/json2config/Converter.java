@@ -28,7 +28,7 @@ import org.json.JSONObject;
 public class Converter {
 
 	public enum Type {
-		ITEM, THING
+		ITEM, THING, CHANNEL
 	}
 
 	private static final String CLASS_NAME = Converter.class.getName();
@@ -44,9 +44,9 @@ public class Converter {
 	public Converter(String jsonFile, String outputFile, Type type) {
 		LOGGER.entering(CLASS_NAME, "<init>", jsonFile);
 
-		// gets the jsonObject:
+		// get the jsonObject:
 		JSONObject jsonObject = openFileToJSONObject(jsonFile);
-		// converts first elements to map of IConvertibles:
+		// convert first elements to map of IConvertibles:
 		Map<String, IConvertible> convertibleMap = goThroughFirstEntrysOfJSONObject(jsonObject, type);
 		// get lines from map:
 		List<String> lines = convertibleMapToLines(convertibleMap);
@@ -64,7 +64,7 @@ public class Converter {
 	 * @return the {@link JSONObject} containing the content of the file, if it
 	 *         could be successfully opened, otherwise {@code null}
 	 */
-	public JSONObject openFileToJSONObject(String fileName) {
+	public static JSONObject openFileToJSONObject(String fileName) {
 		LOGGER.entering(CLASS_NAME, "openFileToJSONObject", fileName);
 
 		JSONObject jsonObject = null;
@@ -86,7 +86,7 @@ public class Converter {
 			LOGGER.log(Level.SEVERE, "File content={0} can not be parsed to JSONObject", str);
 			eJ.printStackTrace();
 		} catch (FileNotFoundException eF) {
-			LOGGER.log(Level.SEVERE, "File can not be opened!", file);
+			LOGGER.log(Level.SEVERE, "file={0} can not be opened!", file);
 			eF.printStackTrace();
 		}
 
@@ -106,14 +106,14 @@ public class Converter {
 	 *         the {@code jsonObject}; contains no entries if {@code jsonObject} is
 	 *         {@code null} (or wrong {@code type} is found)
 	 */
-	public Map<String, IConvertible> goThroughFirstEntrysOfJSONObject(JSONObject jsonObject, Type type) {
+	public static Map<String, IConvertible> goThroughFirstEntrysOfJSONObject(JSONObject jsonObject, Type type) {
 		LOGGER.entering(CLASS_NAME, "goThroughFirstEntrysOfJSONObject", new Object[] { jsonObject, type });
 
 		Map<String, IConvertible> returnVal = new HashMap<>();
 
 		if (jsonObject != null) {
 			Iterator<String> ite = jsonObject.keys();
-			while (ite.hasNext()) {
+			loopW: while (ite.hasNext()) {
 				String key = ite.next();
 
 				Object o = jsonObject.get(key);
@@ -124,13 +124,20 @@ public class Converter {
 				JSONObject val = (JSONObject) o;
 
 				IConvertible iconv = null;
-				if (type == Type.ITEM) {
+				switch (type) {
+				case ITEM:
 					iconv = createItem(val);
-				} else if (type == Type.THING) {
-					// iconv = createThing(val);
-				} else {
-					LOGGER.log(Level.SEVERE, "Wrong type={0}", type);
 					break;
+				case THING:
+					// iconv = createThing(val);
+					break;
+				case CHANNEL:
+					iconv = ChannelAppender.createChannel(val);
+					break;
+
+				default:
+					LOGGER.log(Level.SEVERE, "Wrong type={0}", type);
+					break loopW;
 				}
 
 				LOGGER.log(Level.INFO, "Adding IConvertible={0} to convertiblesMap", iconv);
@@ -150,7 +157,7 @@ public class Converter {
 	 * @param content the {@link JSONObject}
 	 * @return the item as {@link Item}
 	 */
-	public Item createItem(JSONObject content) {
+	public static Item createItem(JSONObject content) {
 		LOGGER.entering(CLASS_NAME, "createItem", content);
 
 		String itemType = "";
@@ -314,7 +321,7 @@ public class Converter {
 	 * @param map the map to convert
 	 * @return a {@link List} with all lines as {@link String Strings}
 	 */
-	public List<String> convertibleMapToLines(Map<String, IConvertible> map) {
+	public static List<String> convertibleMapToLines(Map<String, IConvertible> map) {
 		LOGGER.entering(CLASS_NAME, "convertibleMapToLines", map);
 
 		List<String> newLines = new ArrayList<>();
@@ -359,7 +366,7 @@ public class Converter {
 	 * @return {@code true} if the writing operation was successful, {@code false}
 	 *         otherwise
 	 */
-	public boolean writeLinesToFile(List<String> lines, String fileName) {
+	public static boolean writeLinesToFile(List<String> lines, String fileName) {
 		LOGGER.entering(CLASS_NAME, "writeLinesToFile", fileName);
 
 		boolean returnVal;
