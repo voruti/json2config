@@ -9,6 +9,6 @@ The program has two main features:
 ### 1. Converting *org.eclipse.smarthome.core.items.Item.json* into a **.items* file
 
 
-### 2. Appending channel links from `org.eclipse.smarthome.core.thing.link.ItemChannelLink.json` to `*.items` files
+### 2. Appending channel links from **org.eclipse.smarthome.core.thing.link.ItemChannelLink.json** to `*.items` files
 
 
