@@ -4,9 +4,11 @@ A simple utility program which converts [openHAB Items](https://www.openhab.org/
 
 ## Usage
 
-Simply run json2config.jar to convert `org.eclipse.smarthome.core.items.Item.json` (assuming it is in the same directory) to `json.items`. 
+The program has two main features:
 
-You can optionally specify the input and output files:
-`java -jar json2config-XXX.jar [--in <path>] [--out <path>] [--log]`
+### 1. Converting `org.eclipse.smarthome.core.items.Item.json` into a `*.items` file
+
+
+### 2. Appending channel links from `org.eclipse.smarthome.core.thing.link.ItemChannelLink.json` to `*.items` files
 
 
