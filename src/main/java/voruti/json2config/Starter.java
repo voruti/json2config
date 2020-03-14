@@ -92,9 +92,10 @@ public class Starter {
 		}
 
 		// start:
-		LOGGER.log(Level.INFO, "Starting program with jsonFile={0}, itemsFile={1}",
-				new Object[] { jsonFile, itemsFile });
-		new Converter(jsonFile, itemsFile, Type.ITEM);
+		Type type = Type.ITEM;
+		LOGGER.log(Level.INFO, "Starting program with jsonFile={0}, itemsFile={1}, type={2}",
+				new Object[] { jsonFile, itemsFile, type });
+		new Converter(jsonFile, itemsFile, type);
 	}
 
 }

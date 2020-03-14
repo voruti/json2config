@@ -364,14 +364,19 @@ public class Converter {
 
 		boolean returnVal;
 
-		// writing to file:
-		try {
-			LOGGER.log(Level.INFO, "Writing lines to file={0}", fileName);
-			Files.write(Paths.get(fileName), lines, Charset.defaultCharset());
-			returnVal = true;
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "{0} at writing file with lines={1}", new Object[] { e.toString(), lines });
-			e.printStackTrace();
+		if (!lines.isEmpty()) {
+			// writing to file:
+			try {
+				LOGGER.log(Level.INFO, "Writing lines to file={0}", fileName);
+				Files.write(Paths.get(fileName), lines, Charset.defaultCharset());
+				returnVal = true;
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "{0} at writing file with lines={1}", new Object[] { e.toString(), lines });
+				e.printStackTrace();
+				returnVal = false;
+			}
+		} else {
+			LOGGER.log(Level.WARNING, "No objects in List lines={0}", lines);
 			returnVal = false;
 		}
 
