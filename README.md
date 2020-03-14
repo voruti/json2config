@@ -7,7 +7,9 @@ A simple utility program which converts [openHAB Items](https://www.openhab.org/
 ## Usage
 
 You can run the tool with Java:
-```java -jar json2config-XXX.jar [arguments]```
+```bash
+java -jar json2config-XXX.jar [arguments]
+```
 The program has two main features:
 
 
