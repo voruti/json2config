@@ -26,7 +26,7 @@ Alternatively you can adjust the program arguments to specify the file locations
 To append channel links to *already existing* .items files, you can use the second feature. If you already have some `*.items` files in your configuration, it's recommended to also including these files i.e. moving them into the same directory. By default (when the appending feature is enabled!!) the tool will use channel links from the `org.eclipse.smarthome.core.thing.link.ItemChannelLink.json` file and append them to all `*.items` files in the same directory.
 Alternatively you can adjust the program arguments to specify the file locations:
 - The `-c`/`--channel`/`--create-channel-links` parameters enable the appending feature. Without one of these, this feature won't run!
-- The `--channel-file <path>`/`--channel-link-file <path>` parameters allow you to specify the file containing the channel links.
+- The `--channel-file <path>`/`--channel-link-file <path>` parameters allow you to specify the .json file location containing the channel links.
 - The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specity the directory in which to search for *.items files.
 
 
