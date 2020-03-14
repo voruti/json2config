@@ -71,6 +71,7 @@ public class Starter {
 					break;
 
 				case "--channel-file":
+				case "--channel-link-file":
 					if (args.length >= i + 2) {
 						chNext = true;
 					}
