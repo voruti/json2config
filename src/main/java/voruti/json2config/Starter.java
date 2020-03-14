@@ -132,7 +132,8 @@ public class Starter {
 		}
 		if (printHelp) {
 			LOGGER.log(Level.WARNING, "Wrong parameter usage");
-			System.out.println("Usage: JSON2Config.jar [--in <path>] [--out <path>] [--log]");
+			System.out.println(
+					"Usage: json2config-XXX.jar [--log] [--in <path>] [--out <path>] [--no-items] [--create-channel-links] [--directory] [--channel-file]");
 			return;
 		}
 
