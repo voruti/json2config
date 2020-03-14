@@ -44,36 +44,14 @@ public class Converter {
 	public Converter(String jsonFile, String outputFile, Type type) {
 		LOGGER.entering(CLASS_NAME, "<init>", jsonFile);
 
-		Map<String, IConvertible> convertibleMap = new HashMap<>();
-
+		// gets the jsonObject:
 		JSONObject jsonObject = openFileToJSONObject(jsonFile);
-		if (jsonObject != null) {
-			
-			Iterator<String> ite = jsonObject.keys();
-			while (ite.hasNext()) {
-				String key = ite.next();
-
-				Object o = jsonObject.get(key);
-				if (!(o instanceof JSONObject)) {
-					LOGGER.log(Level.SEVERE, "Value ({0}) should be instanceof JSONObject, but is not!", o);
-					break;
-				}
-				JSONObject val = (JSONObject) o;
-
-				Item item = createItem(val);
-				LOGGER.log(Level.INFO, "Adding item={0} to itemsMap", item);
-				convertibleMap.put(key, item);
-			}
-
-			// get lines from map:
-			List<String> lines = convertibleMapToLines(convertibleMap);
-
-			// write file:
-			writeLinesToFile(lines, outputFile);
-			
-		} else {
-			LOGGER.log(Level.SEVERE, "jsonObject is null");
-		}
+		// converts first elements to map of IConvertibles:
+		Map<String, IConvertible> convertibleMap = goThroughFirstEntrysOfJSONObject(jsonObject, type);
+		// get lines from map:
+		List<String> lines = convertibleMapToLines(convertibleMap);
+		// write file:
+		writeLinesToFile(lines, outputFile);
 
 		LOGGER.exiting(CLASS_NAME, "<init>");
 	}
@@ -117,7 +95,57 @@ public class Converter {
 	}
 
 	/**
-	 * Creates a {@link {@link JSONObject}} out of a {@link JSONObject}.
+	 * Creates a {@link Map} of all "first values" of the {@code jsonObject}. Uses
+	 * {@code type} to determine in which {@link Type} to convert the
+	 * {@code jsonObject} entries.
+	 * 
+	 * @param jsonObject the {@link JSONObject} to convert
+	 * @param type       the {@link Type} in which to convert the {@code jsonObject}
+	 *                   entries
+	 * @return a {@link Map} containing the {@link IConvertible IConvertibles} of
+	 *         the {@code jsonObject}; contains no entries if {@code jsonObject} is
+	 *         {@code null} (or wrong {@code type} is found)
+	 */
+	public Map<String, IConvertible> goThroughFirstEntrysOfJSONObject(JSONObject jsonObject, Type type) {
+		LOGGER.entering(CLASS_NAME, "goThroughFirstEntrysOfJSONObject", new Object[] { jsonObject, type });
+
+		Map<String, IConvertible> returnVal = new HashMap<>();
+
+		if (jsonObject != null) {
+			Iterator<String> ite = jsonObject.keys();
+			while (ite.hasNext()) {
+				String key = ite.next();
+
+				Object o = jsonObject.get(key);
+				if (!(o instanceof JSONObject)) {
+					LOGGER.log(Level.SEVERE, "Value ({0}) should be instanceof JSONObject, but is not!", o);
+					break;
+				}
+				JSONObject val = (JSONObject) o;
+
+				IConvertible iconv = null;
+				if (type == Type.ITEM) {
+					iconv = createItem(val);
+				} else if (type == Type.THING) {
+					// iconv = createThing(val);
+				} else {
+					LOGGER.log(Level.SEVERE, "Wrong type={0}", type);
+					break;
+				}
+
+				LOGGER.log(Level.INFO, "Adding IConvertible={0} to itemsMap", iconv);
+				returnVal.put(key, iconv);
+			}
+		} else {
+			LOGGER.log(Level.WARNING, "jsonObject is null");
+		}
+
+		LOGGER.exiting(CLASS_NAME, "goThroughFirstEntrysOfJSONObject", returnVal);
+		return returnVal;
+	}
+
+	/**
+	 * Creates a {@link Item} out of a {@link JSONObject}.
 	 * 
 	 * @param content the {@link JSONObject}
 	 * @return the item as {@link Item}
