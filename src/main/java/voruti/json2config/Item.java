@@ -9,7 +9,6 @@ import org.eclipse.smarthome.core.items.ManagedItemProvider.PersistedItem;
 
 /**
  * @author voruti
- *
  */
 public class Item extends PersistedItem implements IConvertible {
 
