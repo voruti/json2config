@@ -29,6 +29,8 @@ Alternatively you can adjust the program arguments to specify the file locations
 - The `--channel-file <path>`/`--channel-link-file <path>` parameters allow you to specify the .json file location containing the channel links.
 - The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specity the directory in which to search for *.items files.
 
+:exclamation:Channel Link Profiles currently will be lost in this process:exclamation: (They can - of course - manually be added afterwards)
+
 
 #### Other program parameters
 
