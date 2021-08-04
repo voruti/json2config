@@ -1,8 +1,10 @@
-package voruti.json2config;
+package voruti.json2config.service;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import voruti.json2config.model.IConvertible;
+import voruti.json2config.model.Item;
 
 import java.io.File;
 import java.io.FileNotFoundException;

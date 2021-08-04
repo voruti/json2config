@@ -1,7 +1,8 @@
-package voruti.json2config;
+package voruti.json2config.service;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import voruti.json2config.model.Channel;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package voruti.json2config;
+package voruti.json2config.model;
 
 import java.util.logging.Logger;
 

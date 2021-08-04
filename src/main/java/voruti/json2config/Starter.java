@@ -1,6 +1,8 @@
 package voruti.json2config;
 
-import voruti.json2config.Converter.Type;
+import voruti.json2config.service.ChannelAppender;
+import voruti.json2config.service.Converter;
+import voruti.json2config.service.Converter.Type;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
