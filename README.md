@@ -47,12 +47,7 @@ directory. Alternatively you can adjust the program arguments to specify the fil
 :exclamation:Channel Link **Profiles** currently will be lost in this process:exclamation: (They can - of course -
 manually be added afterwards)
 
-#### Other program parameters
+#### Other program features
 
 When enabling both features, the converting feature will run first, so the appending feature can then use the generated
 .items file to append the channel links.
-
-With the `-l`/`--log`/`--enable-logging` parameters logging can be enabled. This creates a `latest.log` file in the same
-directory.
-
-

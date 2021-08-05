@@ -19,6 +19,11 @@ dependencies {
     implementation 'org.json:json:20190722'
     implementation 'org.eclipse.smarthome.core:org.eclipse.smarthome.core:0.10.0'
 
+    // SLF4J as a facade over Log4j2 required dependencies
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
+
     // JUnit 5:
     testImplementation(platform('org.junit:junit-bom:5.7.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')

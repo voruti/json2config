@@ -1,26 +1,25 @@
 package voruti.json2config.model;
 
 import org.eclipse.smarthome.core.items.ManagedItemProvider.PersistedItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author voruti
  */
 public class Item extends PersistedItem implements IConvertible {
 
-    private static final String CLASS_NAME = Item.class.getName();
-    private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Item.class);
 
     /**
      * @param itemType
      */
     public Item(String itemType) {
         super(itemType);
-        LOGGER.log(Level.FINE, "{0} constructed", this);
+        LOGGER.trace("{} constructed", this);
     }
 
     @Override
@@ -56,8 +55,6 @@ public class Item extends PersistedItem implements IConvertible {
      */
     @Override
     public String toConfigLine(String name) {
-        LOGGER.entering(CLASS_NAME, "toConfigLine", name);
-
         String baseItemTypeString = "";
         if (!baseItemType.equalsIgnoreCase("")) {
             baseItemTypeString = ":" + baseItemType;
@@ -132,9 +129,7 @@ public class Item extends PersistedItem implements IConvertible {
             tagsString += "]";
         }
 
-        String output = String.format("%-30s %-40s %-20s %-20s %-20s %-20s", beginString, name, labelString,
+        return String.format("%-30s %-40s %-20s %-20s %-20s %-20s", beginString, name, labelString,
                 categoryString, groupNamesString, tagsString).trim();
-        LOGGER.exiting(CLASS_NAME, "toConfigLine", output);
-        return output;
     }
 }

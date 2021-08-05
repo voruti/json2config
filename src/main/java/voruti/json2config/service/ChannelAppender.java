@@ -2,6 +2,10 @@ package voruti.json2config.service;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import voruti.json2config.model.Channel;
 
 import java.io.File;
@@ -12,8 +16,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -21,8 +23,8 @@ import java.util.stream.Collectors;
  */
 public class ChannelAppender {
 
-    private static final String CLASS_NAME = ChannelAppender.class.getName();
-    private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChannelAppender.class);
+    private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
 
     /**
      * Appends the channel links from {@code channelLinkFile} to all ".items" files
@@ -33,22 +35,20 @@ public class ChannelAppender {
      * @param directory       the directory in which to search for ".items" files
      */
     public ChannelAppender(String channelLinkFile, String directory) {
-        LOGGER.entering(CLASS_NAME, "<init>", new Object[]{channelLinkFile, directory});
-
         // get the jsonObject:
         JSONObject jsonObject = Converter.openFileToJSONObject(channelLinkFile);
         // convert first elements to list of Channels:
         List<Channel> channelsList = Converter.goThroughFirstEntrysOfJSONObject(jsonObject, Converter.Type.CHANNEL)
                 .values().stream().map(c -> (Channel) c).collect(Collectors.toList());
-        LOGGER.log(Level.FINE, "channelsList={0} with size={1}", new Object[]{channelsList, channelsList.size()});
-        System.out.println(String.format("Found %s channel links.", channelsList.size()));
+        LOGGER.trace("channelsList={} with size={}", channelsList, channelsList.size());
+        System.out.printf("Found %s channel links.%n", channelsList.size());
 
         // search items files:
         List<String> itemsFiles = findItemsFilesInDir(directory);
         List<String> itemnamesList = itemsFiles.stream().map(f -> getItemnamesFromFile(f)).flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        LOGGER.log(Level.FINE, "itemnamesList={0} with size={1}", new Object[]{itemnamesList, itemnamesList.size()});
-        System.out.println(String.format("Found %s items.", itemnamesList.size()));
+        LOGGER.trace("itemnamesList={} with size={}", itemnamesList, itemnamesList.size());
+        System.out.printf("Found %s items.%n", itemnamesList.size());
 
         // only items present in both lists:
         List<String> newItemnamesList = itemnamesList.stream().filter(n -> {
@@ -61,9 +61,9 @@ public class ChannelAppender {
         }).collect(Collectors.toList());
         List<Channel> relevantChannelsList = channelsList.stream()
                 .filter(c -> newItemnamesList.contains(c.getItemName())).collect(Collectors.toList());
-        LOGGER.log(Level.FINE, "relevantChannelsList={0} with size={1}",
-                new Object[]{relevantChannelsList, relevantChannelsList.size()});
-        System.out.println(String.format("%s match with each other.", relevantChannelsList.size()));
+        LOGGER.trace("relevantChannelsList={} with size={}",
+                relevantChannelsList, relevantChannelsList.size());
+        System.out.printf("%s match with each other.%n", relevantChannelsList.size());
 
         int count = 0;
         for (Channel channel : relevantChannelsList) {
@@ -72,12 +72,10 @@ public class ChannelAppender {
                     count++;
             }
         }
-        LOGGER.log(Level.FINE, "Added count={0} times", count);
-        System.out.println(String.format("Successfully appended %s channel links!", count));
+        LOGGER.trace("Added count={} times", count);
+        System.out.printf("Successfully appended %s channel links!%n", count);
 
         System.out.println("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
-
-        LOGGER.exiting(CLASS_NAME, "<init>");
     }
 
     /**
@@ -87,8 +85,6 @@ public class ChannelAppender {
      * @return the channel as {@link Channel}
      */
     public static Channel createChannel(JSONObject content) {
-        LOGGER.entering(CLASS_NAME, "createChannel", content);
-
         String itemName = "";
         String channelUID = "";
 
@@ -100,7 +96,7 @@ public class ChannelAppender {
             switch (key1) {
                 case "class":
                     if (!val1.equals("org.eclipse.smarthome.core.thing.link.ItemChannelLink")) {
-                        LOGGER.log(Level.WARNING, "class={0} different than expected!", val1);
+                        LOGGER.warn("class={} different than expected!", val1);
                     }
                     break;
                 case "value":
@@ -130,25 +126,25 @@ public class ChannelAppender {
                                                                 }
                                                                 channelUID += (String) o;
                                                             } else {
-                                                                LOGGER.log(Level.WARNING,
-                                                                        "JSONArray={0} item={1} is not instanceof String!",
-                                                                        new Object[]{key3, o});
+                                                                LOGGER.warn(
+                                                                        "JSONArray={} item={} is not instanceof String!",
+                                                                        key3, o);
                                                             }
                                                         }
                                                     } else {
-                                                        LOGGER.log(Level.WARNING, "{0}={1} is not instanceof JSONArray!",
-                                                                new Object[]{key3, val3});
+                                                        LOGGER.warn("{}={} is not instanceof JSONArray!",
+                                                                key3, val3);
                                                     }
                                                     break;
 
                                                 default:
-                                                    LOGGER.log(Level.WARNING, "Unexpected key={0}", key3);
+                                                    LOGGER.warn("Unexpected key={}", key3);
                                                     break;
                                             }
                                         }
                                     } else {
-                                        LOGGER.log(Level.WARNING, "{0}={1} is not instanceof JSONObject!",
-                                                new Object[]{key2, val2});
+                                        LOGGER.warn("{}={} is not instanceof JSONObject!",
+                                                key2, val2);
                                     }
                                 case "configuration":
                                     break;
@@ -156,23 +152,23 @@ public class ChannelAppender {
                                     if (val2 instanceof String) {
                                         itemName = (String) val2;
                                     } else {
-                                        LOGGER.log(Level.WARNING, "{0}={1} is not instanceof String!",
-                                                new Object[]{key2, val2});
+                                        LOGGER.warn("{}={} is not instanceof String!",
+                                                key2, val2);
                                     }
                                     break;
 
                                 default:
-                                    LOGGER.log(Level.WARNING, "Unexpected key={0}", key2);
+                                    LOGGER.warn("Unexpected key={}", key2);
                                     break;
                             }
                         }
                         break;
                     } else {
-                        LOGGER.log(Level.WARNING, "{0}={1} is not instanceof JSONObject!", new Object[]{key1, val1});
+                        LOGGER.warn("{}={} is not instanceof JSONObject!", key1, val1);
                     }
 
                 default:
-                    LOGGER.log(Level.WARNING, "Unexpected key={0}", key1);
+                    LOGGER.warn("Unexpected key={}", key1);
                     break;
             }
         }
@@ -181,7 +177,6 @@ public class ChannelAppender {
         returnVal.setItemName(itemName);
         returnVal.setChannelUID(channelUID);
 
-        LOGGER.exiting(CLASS_NAME, "createChannel", returnVal);
         return returnVal;
     }
 
@@ -193,15 +188,13 @@ public class ChannelAppender {
      * @return a {@link List} containing the names of the items
      */
     public static List<String> getItemnamesFromFile(String fileName) {
-        LOGGER.entering(CLASS_NAME, "getItemnamesFromFile", fileName);
-
         File file = new File(fileName);
 
         List<String> returnVal = new ArrayList<>();
         Scanner sc;
         try {
             sc = new Scanner(file);
-            LOGGER.log(Level.INFO, "Reading lines of file={0} with Scanner={1}", new Object[]{file, sc});
+            LOGGER.info("Reading lines of file={} with Scanner={}", file, sc);
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
@@ -216,11 +209,10 @@ public class ChannelAppender {
 
             sc.close();
         } catch (FileNotFoundException eF) {
-            LOGGER.log(Level.SEVERE, "file={0} can not be opened!", file);
+            LOGGER.error(FATAL, "file={} can not be opened!", file);
             eF.printStackTrace();
         }
 
-        LOGGER.exiting(CLASS_NAME, "getItemnamesFromFile", returnVal);
         return returnVal;
     }
 
@@ -234,8 +226,6 @@ public class ChannelAppender {
      * otherwise
      */
     public static boolean setChannelToItemInFile(String channel, String itemName, String fileName) {
-        LOGGER.entering(CLASS_NAME, "setChannelToItemInFile", new Object[]{channel, itemName, fileName});
-
         File file = new File(fileName);
 
         boolean returnVal = false;
@@ -247,7 +237,7 @@ public class ChannelAppender {
         try {
             sc = new Scanner(file);
 
-            LOGGER.log(Level.INFO, "Reading lines of file={0} with Scanner={1}", new Object[]{file, sc});
+            LOGGER.info("Reading lines of file={} with Scanner={}", file, sc);
             while (sc.hasNextLine()) {
 
                 String line = sc.nextLine();
@@ -270,11 +260,10 @@ public class ChannelAppender {
                 returnVal = Converter.writeLinesToFile(saveLines, fileName);
             }
         } catch (FileNotFoundException eF) {
-            LOGGER.log(Level.SEVERE, "file={0} can not be opened!", file);
+            LOGGER.error(FATAL, "file={} can not be opened!", file);
             eF.printStackTrace();
         }
 
-        LOGGER.exiting(CLASS_NAME, "setChannelToItemInFile", returnVal);
         return returnVal;
     }
 
@@ -285,8 +274,6 @@ public class ChannelAppender {
      * @return name of the item if found, {@code null} otherwise
      */
     public static String searchNameInLine(String line) {
-        LOGGER.entering(CLASS_NAME, "searchNameInLine", line);
-
         String[] arr = line.trim().split("\\s+");
 
         String returnVal = null;
@@ -294,7 +281,6 @@ public class ChannelAppender {
             returnVal = arr[1];
         }
 
-        LOGGER.exiting(CLASS_NAME, "searchNameInLine", returnVal);
         return returnVal;
     }
 
@@ -305,13 +291,8 @@ public class ChannelAppender {
      * @return a {@link List} with all file paths of ".items" files
      */
     public static List<String> findItemsFilesInDir(String directory) {
-        LOGGER.entering(CLASS_NAME, "findItemsFilesInDir", directory);
-
-        List<String> returnVal = Arrays
+        return Arrays
                 .stream(new File(directory).listFiles((dir, filename) -> filename.endsWith(".items")))
                 .map(f -> f.getAbsolutePath()).collect(Collectors.toList());
-
-        LOGGER.exiting(CLASS_NAME, "findItemsFilesInDir", returnVal);
-        return returnVal;
     }
 }
