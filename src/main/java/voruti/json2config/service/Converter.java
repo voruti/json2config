@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * @author voruti
@@ -34,6 +36,11 @@ public class Converter {
     private static final Logger LOGGER = LoggerFactory.getLogger(Converter.class);
     private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
 
+
+    private Converter() {
+    }
+
+
     /**
      * Converts {@code jsonFile} to {@code outputFile}.
      *
@@ -41,11 +48,11 @@ public class Converter {
      * @param outputFile path to file (output)
      * @param type       type of file to convert
      */
-    public Converter(String jsonFile, String outputFile, Type type) {
+    public static void start(String jsonFile, String outputFile, Type type) {
         // get the jsonObject:
         JSONObject jsonObject = openFileToJSONObject(jsonFile);
         // convert first elements to map of IConvertibles:
-        Map<String, IConvertible> convertibleMap = goThroughFirstEntrysOfJSONObject(jsonObject, type);
+        Map<String, IConvertible> convertibleMap = goThroughFirstEntriesOfJSONObject(jsonObject, type);
         // get lines from map:
         List<String> lines = convertibleMapToLines(convertibleMap);
         // write file:
@@ -64,18 +71,18 @@ public class Converter {
         JSONObject jsonObject = null;
 
         File file = new File(fileName);
-        String str = "";
+        StringBuilder str = new StringBuilder();
         Scanner sc;
         try {
             sc = new Scanner(file);
 
             LOGGER.info("Reading lines of file={} with Scanner={}", file, sc);
             while (sc.hasNextLine()) {
-                str += sc.nextLine();
+                str.append(sc.nextLine());
             }
             sc.close();
 
-            jsonObject = new JSONObject(str);
+            jsonObject = new JSONObject(str.toString());
         } catch (JSONException eJ) {
             LOGGER.error(FATAL, "File content={} can not be parsed to JSONObject", str);
             eJ.printStackTrace();
@@ -99,7 +106,7 @@ public class Converter {
      * the {@code jsonObject}; contains no entries if {@code jsonObject} is
      * {@code null} (or wrong {@code type} is found)
      */
-    public static Map<String, IConvertible> goThroughFirstEntrysOfJSONObject(JSONObject jsonObject, Type type) {
+    public static Map<String, IConvertible> goThroughFirstEntriesOfJSONObject(JSONObject jsonObject, Type type) {
         Map<String, IConvertible> returnVal = new HashMap<>();
 
         if (jsonObject != null) {
@@ -220,49 +227,13 @@ public class Converter {
                                     }
                                     break;
                                 case "groupNames":
-                                    if (val2 instanceof JSONArray) {
-                                        for (Object o : (JSONArray) val2) {
-                                            if (o instanceof String) {
-                                                groupNames.add((String) o);
-                                            } else {
-                                                LOGGER.warn("JSONArray={} item={} is not instanceof String!",
-                                                        key2, o);
-                                            }
-                                        }
-                                    } else {
-                                        LOGGER.warn("{}={} is not instanceof JSONArray!",
-                                                key2, val2);
-                                    }
+                                    mapArray(groupNames, key2, val2);
                                     break;
                                 case "tags":
-                                    if (val2 instanceof JSONArray) {
-                                        for (Object o : (JSONArray) val2) {
-                                            if (o instanceof String) {
-                                                tags.add((String) o);
-                                            } else {
-                                                LOGGER.warn("JSONArray={} item={} is not instanceof String!",
-                                                        key2, o);
-                                            }
-                                        }
-                                    } else {
-                                        LOGGER.warn("{}={} is not instanceof JSONArray!",
-                                                key2, val2);
-                                    }
+                                    mapArray(tags, key2, val2);
                                     break;
                                 case "functionParams":
-                                    if (val2 instanceof JSONArray) {
-                                        for (Object o : (JSONArray) val2) {
-                                            if (o instanceof String) {
-                                                functionParams.add((String) o);
-                                            } else {
-                                                LOGGER.warn("JSONArray={} item={} is not instanceof String!",
-                                                        key2, o);
-                                            }
-                                        }
-                                    } else {
-                                        LOGGER.warn("{}={} is not instanceof JSONArray!",
-                                                key2, val2);
-                                    }
+                                    mapArray(functionParams, key2, val2);
                                     break;
                                 case "dimension":
                                     if (val2 instanceof String) {
@@ -282,6 +253,7 @@ public class Converter {
                     } else {
                         LOGGER.warn("{}={} is not instanceof JSONObject!", key1, val1);
                     }
+                    break;
 
                 default:
                     LOGGER.warn("Unexpected key={}", key1);
@@ -302,6 +274,26 @@ public class Converter {
         return item;
     }
 
+    public static void mapArray(Object elementList, String key, Object val) {
+        if (val instanceof JSONArray) {
+            for (Object o : (JSONArray) val) {
+                if (o instanceof String) {
+                    String string = (String) o;
+                    if (elementList instanceof StringJoiner) {
+                        ((StringJoiner) elementList).add(string);
+                    } else {
+                        //noinspection unchecked
+                        ((Collection<String>) elementList).add(string);
+                    }
+                } else {
+                    LOGGER.warn("JSONArray={} item={} is not instanceof String!", key, o);
+                }
+            }
+        } else {
+            LOGGER.warn("{}={} is not instanceof JSONArray!", key, val);
+        }
+    }
+
     /**
      * Converts the {@code map} with objects of {@link IConvertible} implementing
      * classes into {@link String} lines in form of a {@link List}.
@@ -315,10 +307,9 @@ public class Converter {
         if (map.size() > 0) {
             List<String> lines = new ArrayList<>();
 
-            for (String key : map.keySet()) {
-                IConvertible conv = map.get(key);
-                LOGGER.trace("Generating line for {}: {}", key, conv);
-                String line = conv.toConfigLine(key);
+            for (Map.Entry<String, IConvertible> entry : map.entrySet()) {
+                LOGGER.trace("Generating line for {}: {}", entry.getKey(), entry.getValue());
+                String line = entry.getValue().toConfigLine(entry.getKey());
                 LOGGER.info("Created line=[{}]", line);
                 lines.add(line);
             }

@@ -116,14 +116,14 @@ public class Starter {
             Type type = Type.ITEM;
             LOGGER.info("Starting Converter with jsonFile={}, outFile={}, type={}",
                     jsonFile, outFile, type);
-            new Converter(jsonFile, outFile, type);
+            Converter.start(jsonFile, outFile, type);
         }
 
         // start ChannelAppender:
         if (doChannelLinks) {
             LOGGER.info("Starting ChannelAppender with channelFile={}, directory={}",
                     channelFile, directory);
-            new ChannelAppender(channelFile, directory);
+            ChannelAppender.start(channelFile, directory);
         }
     }
 }

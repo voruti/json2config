@@ -14,9 +14,6 @@ public class Item extends PersistedItem implements IConvertible {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Item.class);
 
-    /**
-     * @param itemType
-     */
     public Item(String itemType) {
         super(itemType);
         LOGGER.trace("{} constructed", this);
@@ -65,18 +62,18 @@ public class Item extends PersistedItem implements IConvertible {
             functionNameString = ":" + functionName;
         }
 
-        String functionParamsString = "";
-        if (functionParams.size() != 0) {
-            functionParamsString = "(";
+        StringBuilder functionParamsString = new StringBuilder();
+        if (!functionParams.isEmpty()) {
+            functionParamsString.append("(");
         }
         for (String string : functionParams) {
-            if (!functionParamsString.equalsIgnoreCase("(")) {
-                functionParamsString += ",";
+            if (!functionParamsString.toString().equalsIgnoreCase("(")) {
+                functionParamsString.append(",");
             }
-            functionParamsString += string;
+            functionParamsString.append(string);
         }
-        if (functionParams.size() != 0) {
-            functionParamsString += ")";
+        if (!functionParams.isEmpty()) {
+            functionParamsString.append(")");
         }
 
         String beginString;
@@ -101,35 +98,35 @@ public class Item extends PersistedItem implements IConvertible {
             categoryString = String.format("<%s>", category.toLowerCase());
         }
 
-        String groupNamesString = "";
-        if (groupNames.size() != 0) {
-            groupNamesString = "(";
+        StringBuilder groupNamesString = new StringBuilder();
+        if (!groupNames.isEmpty()) {
+            groupNamesString.append("(");
         }
         for (String string : groupNames) {
-            if (!groupNamesString.equalsIgnoreCase("(")) {
-                groupNamesString += ", ";
+            if (!groupNamesString.toString().equalsIgnoreCase("(")) {
+                groupNamesString.append(", ");
             }
-            groupNamesString += string;
+            groupNamesString.append(string);
         }
-        if (groupNames.size() != 0) {
-            groupNamesString += ")";
+        if (!groupNames.isEmpty()) {
+            groupNamesString.append(")");
         }
 
-        String tagsString = "";
-        if (tags.size() != 0) {
-            tagsString = "[";
+        StringBuilder tagsString = new StringBuilder();
+        if (!tags.isEmpty()) {
+            tagsString.append("[");
         }
         for (String string : tags) {
-            if (!tagsString.equalsIgnoreCase("[")) {
-                tagsString += ", ";
+            if (!tagsString.toString().equalsIgnoreCase("[")) {
+                tagsString.append(", ");
             }
-            tagsString += string;
+            tagsString.append(string);
         }
-        if (tags.size() != 0) {
-            tagsString += "]";
+        if (!tags.isEmpty()) {
+            tagsString.append("]");
         }
 
         return String.format("%-30s %-40s %-20s %-20s %-20s %-20s", beginString, name, labelString,
-                categoryString, groupNamesString, tagsString).trim();
+                categoryString, groupNamesString, tagsString).strip();
     }
 }

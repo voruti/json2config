@@ -15,7 +15,7 @@ You can run the tool with Java:
 java -jar json2config-XXX.jar [arguments]
 ```
 
-The program has two main features. By default only the first one will be executed.
+The program has two main features. By default, only the first one will be executed.
 
 ### 1. Converting org.eclipse.smarthome.core.items.Item.json into a *.items file
 
@@ -33,7 +33,7 @@ Alternatively you can adjust the program arguments to specify the file locations
 
 To append channel links to *already existing* .items files, you can use the second feature. If you already have
 some `*.items` files in your configuration, it's recommended to also including these files i.e. moving them into the
-same directory. By default (when the appending feature is enabled!!) the tool will use channel links from
+same directory. By default, (when the appending feature is enabled!!) the tool will use channel links from
 the `org.eclipse.smarthome.core.thing.link.ItemChannelLink.json` file and append them to all `*.items` files in the same
 directory. Alternatively you can adjust the program arguments to specify the file locations:
 
@@ -41,7 +41,7 @@ directory. Alternatively you can adjust the program arguments to specify the fil
   feature won't run!
 - The `--channel-file <path>`/`--channel-link-file <path>` parameters allow you to specify the .json file location
   containing the channel links.
-- The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specity the directory in which to search
+- The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specify the directory in which to search
   for *.items files.
 
 :exclamation:Channel Link **Profiles** currently will be lost in this process:exclamation: (They can - of course -

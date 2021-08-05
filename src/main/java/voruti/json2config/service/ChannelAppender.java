@@ -1,6 +1,5 @@
 package voruti.json2config.service;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +26,11 @@ public class ChannelAppender {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChannelAppender.class);
     private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
 
+
+    private ChannelAppender() {
+    }
+
+
     /**
      * Appends the channel links from {@code channelLinkFile} to all ".items" files
      * in the {@code directory}.
@@ -34,18 +39,21 @@ public class ChannelAppender {
      *                        JSON format
      * @param directory       the directory in which to search for ".items" files
      */
-    public ChannelAppender(String channelLinkFile, String directory) {
+    public static void start(String channelLinkFile, String directory) {
         // get the jsonObject:
         JSONObject jsonObject = Converter.openFileToJSONObject(channelLinkFile);
         // convert first elements to list of Channels:
-        List<Channel> channelsList = Converter.goThroughFirstEntrysOfJSONObject(jsonObject, Converter.Type.CHANNEL)
-                .values().stream().map(c -> (Channel) c).collect(Collectors.toList());
+        List<Channel> channelsList = Converter.goThroughFirstEntriesOfJSONObject(jsonObject, Converter.Type.CHANNEL).values().stream()
+                .map(Channel.class::cast)
+                .collect(Collectors.toList());
         LOGGER.trace("channelsList={} with size={}", channelsList, channelsList.size());
         System.out.printf("Found %s channel links.%n", channelsList.size());
 
         // search items files:
         List<String> itemsFiles = findItemsFilesInDir(directory);
-        List<String> itemnamesList = itemsFiles.stream().map(f -> getItemnamesFromFile(f)).flatMap(Collection::stream)
+        List<String> itemnamesList = itemsFiles.stream()
+                .map(ChannelAppender::getItemnamesFromFile)
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
         LOGGER.trace("itemnamesList={} with size={}", itemnamesList, itemnamesList.size());
         System.out.printf("Found %s items.%n", itemnamesList.size());
@@ -86,7 +94,7 @@ public class ChannelAppender {
      */
     public static Channel createChannel(JSONObject content) {
         String itemName = "";
-        String channelUID = "";
+        StringJoiner channelUID = new StringJoiner(":");
 
         Iterator<String> ite1 = content.keys();
         while (ite1.hasNext()) {
@@ -116,36 +124,17 @@ public class ChannelAppender {
                                             String key3 = ite3.next();
                                             Object val3 = jso3.get(key3);
 
-                                            switch (key3) {
-                                                case "segments":
-                                                    if (val3 instanceof JSONArray) {
-                                                        for (Object o : (JSONArray) val3) {
-                                                            if (o instanceof String) {
-                                                                if (!channelUID.equalsIgnoreCase("")) {
-                                                                    channelUID += ":";
-                                                                }
-                                                                channelUID += (String) o;
-                                                            } else {
-                                                                LOGGER.warn(
-                                                                        "JSONArray={} item={} is not instanceof String!",
-                                                                        key3, o);
-                                                            }
-                                                        }
-                                                    } else {
-                                                        LOGGER.warn("{}={} is not instanceof JSONArray!",
-                                                                key3, val3);
-                                                    }
-                                                    break;
-
-                                                default:
-                                                    LOGGER.warn("Unexpected key={}", key3);
-                                                    break;
+                                            if ("segments".equals(key3)) {
+                                                Converter.mapArray(channelUID, key3, val3);
+                                            } else {
+                                                LOGGER.warn("Unexpected key={}", key3);
                                             }
                                         }
                                     } else {
                                         LOGGER.warn("{}={} is not instanceof JSONObject!",
                                                 key2, val2);
                                     }
+                                    break;
                                 case "configuration":
                                     break;
                                 case "itemName":
@@ -166,6 +155,7 @@ public class ChannelAppender {
                     } else {
                         LOGGER.warn("{}={} is not instanceof JSONObject!", key1, val1);
                     }
+                    break;
 
                 default:
                     LOGGER.warn("Unexpected key={}", key1);
@@ -175,7 +165,7 @@ public class ChannelAppender {
 
         Channel returnVal = new Channel();
         returnVal.setItemName(itemName);
-        returnVal.setChannelUID(channelUID);
+        returnVal.setChannelUID(channelUID.toString());
 
         return returnVal;
     }
@@ -268,7 +258,7 @@ public class ChannelAppender {
     }
 
     /**
-     * Searches for a item name in the {@code line}.
+     * Searches for an item name in the {@code line}.
      *
      * @param line the line to search in
      * @return name of the item if found, {@code null} otherwise
@@ -291,8 +281,8 @@ public class ChannelAppender {
      * @return a {@link List} with all file paths of ".items" files
      */
     public static List<String> findItemsFilesInDir(String directory) {
-        return Arrays
-                .stream(new File(directory).listFiles((dir, filename) -> filename.endsWith(".items")))
-                .map(f -> f.getAbsolutePath()).collect(Collectors.toList());
+        return Arrays.stream(new File(directory).listFiles((dir, filename) -> filename.endsWith(".items")))
+                .map(File::getAbsolutePath)
+                .collect(Collectors.toList());
     }
 }
