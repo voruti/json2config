@@ -8,6 +8,7 @@ import voruti.json2config.service.SharedService.Type;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -84,8 +85,8 @@ public class ChannelAppender {
             System.out.printf("Successfully appended %s channel links!%n", count);
 
             System.out.println("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
-        } catch (FileNotFoundException e) {
-            log.error("File {} not found", channelLinkFile);
+        } catch (IOException e) {
+            log.error("Can't open file {}", channelLinkFile);
         }
     }
 

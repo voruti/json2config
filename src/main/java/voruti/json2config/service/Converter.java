@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import voruti.json2config.model.IConvertible;
 import voruti.json2config.service.SharedService.Type;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,8 +38,8 @@ public class Converter {
             List<String> lines = convertibleMapToLines(convertibleMap);
             // write file:
             SharedService.writeLinesToFile(lines, outputFile);
-        } catch (FileNotFoundException e) {
-            log.error("File {} not found", jsonFile);
+        } catch (IOException e) {
+            log.error("Can't open file {}", jsonFile);
         }
     }
 

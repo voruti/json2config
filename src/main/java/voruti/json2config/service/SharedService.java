@@ -10,15 +10,13 @@ import voruti.json2config.model.IConvertible;
 import voruti.json2config.model.json.JsonChannelLink;
 import voruti.json2config.model.json.JsonItem;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 @Slf4j
 public class SharedService {
@@ -36,20 +34,12 @@ public class SharedService {
      *
      * @param fileName the path/name of the file to open
      * @return a {@link String} with the content
-     * @throws FileNotFoundException if the file can't be found
+     * @throws IOException if the file can't be opened
      */
-    public static String openFileToString(String fileName) throws FileNotFoundException {
-        File file = new File(fileName);
-        StringBuilder str = new StringBuilder();
-        Scanner sc = new Scanner(file);
-
-        log.info("Reading lines of file={} with Scanner={}", file, sc);
-        while (sc.hasNextLine()) {
-            str.append(sc.nextLine());
-        }
-        sc.close();
-
-        return str.toString();
+    public static String openFileToString(String fileName) throws IOException {
+        Path path = Paths.get(fileName);
+        log.info("Reading lines at path={}", path);
+        return String.join("\n", Files.readAllLines(path, Charset.defaultCharset()));
     }
 
     /**
