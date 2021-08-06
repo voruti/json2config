@@ -1,8 +1,6 @@
 package voruti.json2config.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 import voruti.json2config.model.json.JsonChannelLink;
 import voruti.json2config.service.SharedService.Type;
 
@@ -20,9 +18,6 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class ChannelAppender {
-
-    private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
-
 
     private ChannelAppender() {
     }
@@ -103,7 +98,7 @@ public class ChannelAppender {
             return Arrays.stream(SharedService.openFileToString(fileName).split("\n"))
                     .filter(line -> !line.isEmpty() && !line.toLowerCase().startsWith("group"))
                     .map(ChannelAppender::searchNameInLine)
-                    .filter(itemName -> itemName != null && !itemName.isEmpty())
+                    .filter(itemName -> !itemName.isEmpty())
                     .collect(Collectors.toList());
         } catch (IOException e) {
             log.error("Can't open file {}", fileName);
@@ -128,8 +123,7 @@ public class ChannelAppender {
                     .map(line -> {
                         if (!line.isEmpty() && !line.toLowerCase().startsWith("group")) {
                             String readItemName = searchNameInLine(line);
-                            if (readItemName != null && !readItemName.isEmpty()
-                                    && readItemName.equals(channelLink.getValue().getItemName())) {
+                            if (!readItemName.isEmpty() && readItemName.equals(channelLink.getValue().getItemName())) {
                                 return channelLink.toConfigLine(line);
                             }
                         }
@@ -155,14 +149,14 @@ public class ChannelAppender {
      * @return name of the item if found, {@code null} otherwise
      */
     public static String searchNameInLine(String line) {
-        String[] arr = line.trim().split("\\s+");
+        String[] arr = line.strip().split("\\s+");
 
-        String returnVal = null;
+        String itemName = "";
         if (arr.length >= 2) {
-            returnVal = arr[1];
+            itemName = arr[1];
         }
 
-        return returnVal;
+        return itemName;
     }
 
     /**
