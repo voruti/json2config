@@ -14,8 +14,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.json:json:20190722'
-
     // SLF4J as a facade over Log4j2 required dependencies
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'

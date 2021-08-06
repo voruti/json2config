@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -52,15 +53,15 @@ public class ChannelAppender {
 
             // search items files:
             List<String> itemsFiles = findItemsFilesInDir(directory);
-            List<String> itemnamesList = itemsFiles.stream()
-                    .map(ChannelAppender::getItemnamesFromFile)
+            List<String> itemNamesList = itemsFiles.stream()
+                    .map(ChannelAppender::getItemNamesFromFile)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
-            log.trace("itemnamesList={} with size={}", itemnamesList, itemnamesList.size());
-            System.out.printf("Found %s items.%n", itemnamesList.size());
+            log.trace("itemNamesList={} with size={}", itemNamesList, itemNamesList.size());
+            System.out.printf("Found %s items.%n", itemNamesList.size());
 
             // only items present in both lists:
-            List<String> newItemnamesList = itemnamesList.stream().filter(n -> {
+            List<String> newItemNamesList = itemNamesList.stream().filter(n -> {
                 for (JsonChannelLink channel : channelsList) {
                     if (channel.getValue().getItemName().equals(n)) {
                         return true;
@@ -69,7 +70,7 @@ public class ChannelAppender {
                 return false;
             }).collect(Collectors.toList());
             List<JsonChannelLink> relevantChannelsList = channelsList.stream()
-                    .filter(c -> newItemnamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
+                    .filter(c -> newItemNamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
             log.trace("relevantChannelsList={} with size={}",
                     relevantChannelsList, relevantChannelsList.size());
             System.out.printf("%s match with each other.%n", relevantChannelsList.size());
@@ -97,7 +98,7 @@ public class ChannelAppender {
      * @param fileName the file(-Name) to open and search for items
      * @return a {@link List} containing the names of the items
      */
-    public static List<String> getItemnamesFromFile(String fileName) {
+    public static List<String> getItemNamesFromFile(String fileName) {
         File file = new File(fileName);
 
         List<String> returnVal = new ArrayList<>();
@@ -201,7 +202,7 @@ public class ChannelAppender {
      * @return a {@link List} with all file paths of ".items" files
      */
     public static List<String> findItemsFilesInDir(String directory) {
-        return Arrays.stream(new File(directory).listFiles((dir, filename) -> filename.endsWith(".items")))
+        return Arrays.stream(Objects.requireNonNull(new File(directory).listFiles((dir, filename) -> filename.endsWith(".items"))))
                 .map(File::getAbsolutePath)
                 .collect(Collectors.toList());
     }

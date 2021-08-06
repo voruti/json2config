@@ -60,6 +60,7 @@ public class SharedService {
                 // mapType =  new TypeToken<Map<String, JsonThing>>() {}.getType();
                 break;
             case CHANNEL:
+                //noinspection DuplicateBranchesInSwitch
                 mapType = new TypeToken<Map<String, JsonChannelLink>>() {
                 }.getType();
                 break;
@@ -81,7 +82,7 @@ public class SharedService {
      * otherwise
      */
     public static boolean writeLinesToFile(List<String> lines, String fileName) {
-        boolean returnVal;
+        boolean returnVal = false;
 
         if (!lines.isEmpty()) {
             // writing to file:
@@ -91,12 +92,9 @@ public class SharedService {
                 returnVal = true;
             } catch (IOException e) {
                 log.error(FATAL, "{} at writing file with lines={}", e, lines);
-                e.printStackTrace();
-                returnVal = false;
             }
         } else {
             log.warn("No objects in List lines={}", lines);
-            returnVal = false;
         }
 
         return returnVal;
