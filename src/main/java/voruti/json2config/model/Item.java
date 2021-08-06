@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.util.List;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * @author voruti
@@ -37,81 +38,43 @@ public class Item implements IConvertible {
      */
     @Override
     public String toConfigLine(String name) {
-        String baseItemTypeString = "";
-        if (!baseItemType.equalsIgnoreCase("")) {
-            baseItemTypeString = ":" + baseItemType;
-        }
-
-        String functionNameString = "";
-        if (!functionName.equalsIgnoreCase("")) {
-            functionNameString = ":" + functionName;
-        }
-
-        StringBuilder functionParamsString = new StringBuilder();
-        if (!functionParams.isEmpty()) {
-            functionParamsString.append("(");
-        }
-        for (String string : functionParams) {
-            if (!functionParamsString.toString().equalsIgnoreCase("(")) {
-                functionParamsString.append(",");
-            }
-            functionParamsString.append(string);
-        }
-        if (!functionParams.isEmpty()) {
-            functionParamsString.append(")");
-        }
-
-        String beginString;
+        String baseItemTypeString = baseItemType.isEmpty()
+                ? ""
+                : ":" + baseItemType;
+        String functionNameString = functionName.isEmpty()
+                ? ""
+                : ":" + functionName;
+        String functionParamsString = functionParams.isEmpty()
+                ? ""
+                : String.format("(%s)", String.join(",", functionParams));
+        String beginString = itemType;
         if (itemType.equalsIgnoreCase("Group")) {
-            beginString = String.format("%s%s%s%s", itemType, baseItemTypeString, functionNameString,
-                    functionParamsString);
-        } else {
-            beginString = itemType;
+            beginString += baseItemTypeString + functionNameString + functionParamsString;
         }
 
-        String labelString;
-        if (label.equalsIgnoreCase("")) {
-            labelString = "";
-        } else {
-            labelString = String.format("\"%s\"", label);
-        }
+        String labelString = label.isEmpty()
+                ? ""
+                : String.format("\"%s\"", label);
 
-        String categoryString;
-        if (category.equalsIgnoreCase("")) {
-            categoryString = "";
-        } else {
-            categoryString = String.format("<%s>", category.toLowerCase());
-        }
+        String categoryString = category.isEmpty()
+                ? ""
+                : String.format("<%s>", category.toLowerCase());
 
-        StringBuilder groupNamesString = new StringBuilder();
-        if (!groupNames.isEmpty()) {
-            groupNamesString.append("(");
-        }
-        for (String string : groupNames) {
-            if (!groupNamesString.toString().equalsIgnoreCase("(")) {
-                groupNamesString.append(", ");
-            }
-            groupNamesString.append(string);
-        }
-        if (!groupNames.isEmpty()) {
-            groupNamesString.append(")");
-        }
+        String groupNamesString = groupNames.isEmpty()
+                ? ""
+                : String.format("(%s)", String.join(", ", groupNames));
 
-        StringBuilder tagsString = new StringBuilder();
-        if (!tags.isEmpty()) {
-            tagsString.append("[");
-        }
-        for (String string : tags) {
-            if (!tagsString.toString().equalsIgnoreCase("[")) {
-                tagsString.append(", ");
-            }
-            tagsString.append(string);
-        }
-        if (!tags.isEmpty()) {
-            tagsString.append("]");
-        }
+        String tagsString = tags.isEmpty()
+                ? ""
+                : String.format("[%s]", String.join(", ", tags));
 
-        return String.format("%-30s %-40s %-20s %-20s %-20s %-20s", beginString, name, labelString,
-                categoryString, groupNamesString, tagsString).strip();
+        return new StringJoiner(" ")
+                .add(beginString)
+                .add(name)
+                .add(labelString)
+                .add(categoryString)
+                .add(groupNamesString)
+                .add(tagsString)
+                .toString().strip();
     }
 }
