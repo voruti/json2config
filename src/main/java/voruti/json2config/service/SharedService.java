@@ -92,8 +92,4 @@ public class SharedService {
 
         return returnVal;
     }
-
-    public enum Type {
-        ITEM, THING, CHANNEL
-    }
 }

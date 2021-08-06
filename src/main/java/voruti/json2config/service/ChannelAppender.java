@@ -2,7 +2,6 @@ package voruti.json2config.service;
 
 import lombok.extern.slf4j.Slf4j;
 import voruti.json2config.model.json.JsonChannelLink;
-import voruti.json2config.service.SharedService.Type;
 
 import java.io.File;
 import java.io.IOException;
