@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -298,7 +299,7 @@ public class Converter {
         if (map.size() > 0) {
             List<String> lines = new ArrayList<>();
 
-            for (Map.Entry<String, IConvertible> entry : map.entrySet()) {
+            for (Entry<String, IConvertible> entry : map.entrySet()) {
                 log.trace("Generating line for {}: {}", entry.getKey(), entry.getValue());
                 String line = entry.getValue().toConfigLine(entry.getKey());
                 log.info("Created line=[{}]", line);
