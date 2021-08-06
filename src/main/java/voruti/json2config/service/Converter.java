@@ -262,17 +262,7 @@ public class Converter {
             }
         }
 
-        Item item = new Item(itemType);
-        item.category = category;
-        item.label = label;
-        item.baseItemType = baseItemType;
-        item.functionName = functionName;
-        item.groupNames = groupNames;
-        item.tags = tags;
-        item.functionParams = functionParams;
-        item.dimension = dimension;
-
-        return item;
+        return new Item(baseItemType, groupNames, itemType, tags, label, category, functionName, functionParams, dimension);
     }
 
     public static void mapArray(Object elementList, String key, Object val) {

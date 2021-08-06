@@ -1,7 +1,9 @@
 package voruti.json2config.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Set;
@@ -9,27 +11,21 @@ import java.util.Set;
 /**
  * @author voruti
  */
-@Slf4j
-//@Getter
-//@Setter
+@Getter
+@Setter
 @ToString
+@AllArgsConstructor
 public class Item implements IConvertible {
 
-    public String baseItemType;
-    public List<String> groupNames;
-    public String itemType;
-    public Set<String> tags;
-    public String label;
-    public String category;
-    public String functionName;
-    public List<String> functionParams;
-    public String dimension;
-
-
-    public Item(String itemType) {
-        this.itemType = itemType;
-        log.trace("{} constructed", this);
-    }
+    private String baseItemType;
+    private List<String> groupNames;
+    private String itemType;
+    private Set<String> tags;
+    private String label;
+    private String category;
+    private String functionName;
+    private List<String> functionParams;
+    private String dimension;
 
 
     /**

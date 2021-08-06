@@ -164,11 +164,7 @@ public class ChannelAppender {
             }
         }
 
-        Channel returnVal = new Channel();
-        returnVal.setItemName(itemName);
-        returnVal.setChannelUID(channelUID.toString());
-
-        return returnVal;
+        return new Channel(itemName, channelUID.toString());
     }
 
     /**
