@@ -99,29 +99,16 @@ public class ChannelAppender {
      * @return a {@link List} containing the names of the items
      */
     public static List<String> getItemNamesFromFile(String fileName) {
-        File file = new File(fileName);
-
         List<String> returnVal = new ArrayList<>();
-        Scanner sc;
+
         try {
-            sc = new Scanner(file);
-            log.info("Reading lines of file={} with Scanner={}", file, sc);
-
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine();
-                if (line != null && !line.equalsIgnoreCase("")
-                        && !line.toLowerCase().startsWith("Group".toLowerCase())) {
-                    String itemName = searchNameInLine(line);
-                    if (itemName != null && !itemName.equalsIgnoreCase("")) {
-                        returnVal.add(itemName);
-                    }
-                }
-            }
-
-            sc.close();
-        } catch (FileNotFoundException eF) {
-            log.error(FATAL, "file={} can not be opened!", file);
-            eF.printStackTrace();
+            return Arrays.stream(SharedService.openFileToString(fileName).split("\n"))
+                    .filter(line -> !line.isEmpty() && !line.toLowerCase().startsWith("group"))
+                    .map(ChannelAppender::searchNameInLine)
+                    .filter(itemName -> itemName != null && !itemName.isEmpty())
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            log.error("Can't open file {}", fileName);
         }
 
         return returnVal;
