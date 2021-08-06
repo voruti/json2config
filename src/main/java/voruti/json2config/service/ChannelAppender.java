@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import voruti.json2config.model.json.JsonChannelLink;
+import voruti.json2config.service.SharedService.Type;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,9 +41,9 @@ public class ChannelAppender {
 
         try {
             // open file:
-            String content = Converter.openFileToString(channelLinkFile);
+            String content = SharedService.openFileToString(channelLinkFile);
             // map to list of channel links:
-            List<JsonChannelLink> channelsList = Converter.jsonToConvertibleMap(content, Converter.Type.CHANNEL).values().stream()
+            List<JsonChannelLink> channelsList = SharedService.jsonToConvertibleMap(content, Type.CHANNEL).values().stream()
                     .map(JsonChannelLink.class::cast)
                     .collect(Collectors.toList());
             log.trace("channelsList={} with size={}", channelsList, channelsList.size());
@@ -165,7 +166,7 @@ public class ChannelAppender {
             sc.close();
 
             if (change) {
-                returnVal = Converter.writeLinesToFile(saveLines, fileName);
+                returnVal = SharedService.writeLinesToFile(saveLines, fileName);
             }
         } catch (FileNotFoundException eF) {
             log.error(FATAL, "file={} can not be opened!", file);

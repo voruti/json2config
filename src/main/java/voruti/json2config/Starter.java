@@ -5,7 +5,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import voruti.json2config.service.ChannelAppender;
 import voruti.json2config.service.Converter;
-import voruti.json2config.service.Converter.Type;
+import voruti.json2config.service.SharedService.Type;
 
 /**
  * @author voruti
