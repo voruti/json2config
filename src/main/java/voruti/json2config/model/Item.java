@@ -2,17 +2,32 @@ package voruti.json2config.model;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.smarthome.core.items.ManagedItemProvider.PersistedItem;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author voruti
  */
 @Slf4j
+//@Getter
+//@Setter
 @ToString
-public class Item extends PersistedItem implements IConvertible {
+public class Item implements IConvertible {
+
+    public String baseItemType;
+    public List<String> groupNames;
+    public String itemType;
+    public Set<String> tags;
+    public String label;
+    public String category;
+    public String functionName;
+    public List<String> functionParams;
+    public String dimension;
+
 
     public Item(String itemType) {
-        super(itemType);
+        this.itemType = itemType;
         log.trace("{} constructed", this);
     }
 
