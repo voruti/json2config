@@ -7,14 +7,12 @@ import voruti.json2config.model.json.JsonChannelLink;
 import voruti.json2config.service.SharedService.Type;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -122,45 +120,32 @@ public class ChannelAppender {
      * @return {@code true} if the {@code channelLink} could be appended, {@code false} otherwise
      */
     public static boolean setChannelToItemInFile(JsonChannelLink channelLink, String fileName) {
-        File file = new File(fileName);
+        boolean successful = false;
 
-        boolean returnVal = false;
-
-        List<String> saveLines = new ArrayList<>();
-        boolean change = false;
-
-        Scanner sc;
         try {
-            sc = new Scanner(file);
+            List<String> originalLines = Arrays.asList(SharedService.openFileToString(fileName).split("\n"));
+            List<String> modifiedLines = originalLines.stream()
+                    .map(line -> {
+                        if (!line.isEmpty() && !line.toLowerCase().startsWith("group")) {
+                            String readItemName = searchNameInLine(line);
+                            if (readItemName != null && !readItemName.isEmpty()
+                                    && readItemName.equals(channelLink.getValue().getItemName())) {
+                                return channelLink.toConfigLine(line);
+                            }
+                        }
+                        // return unmodified line:
+                        return line;
+                    })
+                    .collect(Collectors.toList());
 
-            log.info("Reading lines of file={} with Scanner={}", file, sc);
-            while (sc.hasNextLine()) {
-
-                String line = sc.nextLine();
-                if (line != null && !line.equalsIgnoreCase("")
-                        && !line.toLowerCase().startsWith("Group".toLowerCase())) {
-
-                    String readItemName = searchNameInLine(line);
-                    if (readItemName != null && !readItemName.equalsIgnoreCase("") && readItemName.equals(channelLink.getValue().getItemName())) {
-
-                        line = channelLink.toConfigLine(line);
-                        change = true;
-                    }
-                }
-
-                saveLines.add(line);
+            if (!originalLines.equals(modifiedLines)) {
+                successful = SharedService.writeLinesToFile(modifiedLines, fileName);
             }
-            sc.close();
-
-            if (change) {
-                returnVal = SharedService.writeLinesToFile(saveLines, fileName);
-            }
-        } catch (FileNotFoundException eF) {
-            log.error(FATAL, "file={} can not be opened!", file);
-            eF.printStackTrace();
+        } catch (IOException e) {
+            log.error("Can't open file {}", fileName);
         }
 
-        return returnVal;
+        return successful;
     }
 
     /**
