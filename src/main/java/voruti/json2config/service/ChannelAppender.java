@@ -38,48 +38,54 @@ public class ChannelAppender {
     public static void start(String channelLinkFile, String directory) {
         log.info("Starting ChannelAppender with channelLinkFile={}, directory={}", channelLinkFile, directory);
 
-        // load file to list of channel links:
-        List<JsonChannelLink> channelsList = Converter.openFileToConvertibleMap(channelLinkFile, Converter.Type.CHANNEL).values().stream()
-                .map(JsonChannelLink.class::cast)
-                .collect(Collectors.toList());
-        log.trace("channelsList={} with size={}", channelsList, channelsList.size());
-        System.out.printf("Found %s channel links.%n", channelsList.size());
+        try {
+            // open file:
+            String content = Converter.openFileToString(channelLinkFile);
+            // map to list of channel links:
+            List<JsonChannelLink> channelsList = Converter.openFileToConvertibleMap(content, Converter.Type.CHANNEL).values().stream()
+                    .map(JsonChannelLink.class::cast)
+                    .collect(Collectors.toList());
+            log.trace("channelsList={} with size={}", channelsList, channelsList.size());
+            System.out.printf("Found %s channel links.%n", channelsList.size());
 
-        // search items files:
-        List<String> itemsFiles = findItemsFilesInDir(directory);
-        List<String> itemnamesList = itemsFiles.stream()
-                .map(ChannelAppender::getItemnamesFromFile)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        log.trace("itemnamesList={} with size={}", itemnamesList, itemnamesList.size());
-        System.out.printf("Found %s items.%n", itemnamesList.size());
+            // search items files:
+            List<String> itemsFiles = findItemsFilesInDir(directory);
+            List<String> itemnamesList = itemsFiles.stream()
+                    .map(ChannelAppender::getItemnamesFromFile)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+            log.trace("itemnamesList={} with size={}", itemnamesList, itemnamesList.size());
+            System.out.printf("Found %s items.%n", itemnamesList.size());
 
-        // only items present in both lists:
-        List<String> newItemnamesList = itemnamesList.stream().filter(n -> {
-            for (JsonChannelLink channel : channelsList) {
-                if (channel.getValue().getItemName().equals(n)) {
-                    return true;
+            // only items present in both lists:
+            List<String> newItemnamesList = itemnamesList.stream().filter(n -> {
+                for (JsonChannelLink channel : channelsList) {
+                    if (channel.getValue().getItemName().equals(n)) {
+                        return true;
+                    }
+                }
+                return false;
+            }).collect(Collectors.toList());
+            List<JsonChannelLink> relevantChannelsList = channelsList.stream()
+                    .filter(c -> newItemnamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
+            log.trace("relevantChannelsList={} with size={}",
+                    relevantChannelsList, relevantChannelsList.size());
+            System.out.printf("%s match with each other.%n", relevantChannelsList.size());
+
+            int count = 0;
+            for (JsonChannelLink channel : relevantChannelsList) {
+                for (String iFile : itemsFiles) {
+                    if (setChannelToItemInFile(String.join(":", channel.getValue().getChannelUID().getSegments()), channel.getValue().getItemName(), iFile))
+                        count++;
                 }
             }
-            return false;
-        }).collect(Collectors.toList());
-        List<JsonChannelLink> relevantChannelsList = channelsList.stream()
-                .filter(c -> newItemnamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
-        log.trace("relevantChannelsList={} with size={}",
-                relevantChannelsList, relevantChannelsList.size());
-        System.out.printf("%s match with each other.%n", relevantChannelsList.size());
+            log.trace("Added count={} times", count);
+            System.out.printf("Successfully appended %s channel links!%n", count);
 
-        int count = 0;
-        for (JsonChannelLink channel : relevantChannelsList) {
-            for (String iFile : itemsFiles) {
-                if (setChannelToItemInFile(String.join(":", channel.getValue().getChannelUID().getSegments()), channel.getValue().getItemName(), iFile))
-                    count++;
-            }
+            System.out.println("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
+        } catch (FileNotFoundException e) {
+            log.error("File {} not found", channelLinkFile);
         }
-        log.trace("Added count={} times", count);
-        System.out.printf("Successfully appended %s channel links!%n", count);
-
-        System.out.println("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
     }
 
     /**

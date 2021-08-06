@@ -33,6 +33,7 @@ import java.util.StringJoiner;
 public class Converter {
 
     private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
+    private static final Gson GSON = new GsonBuilder().create();
 
 
     private Converter() {
@@ -49,12 +50,18 @@ public class Converter {
     public static void start(String jsonFile, String outputFile, Type type) {
         log.info("Starting Converter with jsonFile={}, outputFile={}, type={}", jsonFile, outputFile, type);
 
-        // load file into map:
-        Map<String, IConvertible> convertibleMap = openFileToConvertibleMap(jsonFile, type);
-        // get lines from map:
-        List<String> lines = convertibleMapToLines(convertibleMap);
-        // write file:
-        writeLinesToFile(lines, outputFile);
+        try {
+            // open file:
+            String content = openFileToString(jsonFile);
+            // map into map:
+            Map<String, IConvertible> convertibleMap = openFileToConvertibleMap(content, type);
+            // get lines from map:
+            List<String> lines = convertibleMapToLines(convertibleMap);
+            // write file:
+            writeLinesToFile(lines, outputFile);
+        } catch (FileNotFoundException e) {
+            log.error("File {} not found", jsonFile);
+        }
     }
 
     /**
@@ -79,42 +86,33 @@ public class Converter {
     }
 
     /**
-     * Open {@code jsonFile} and convert its content with {@link Gson} to a {@link Map}.
+     * Convert the {@code json} with {@link Gson} to a {@link Map}.
      *
-     * @param jsonFile the path/name of the file to open
-     * @param type     the {@link Type} of the content in the {@code jsonFile}
+     * @param json a {@link String} which contains JSON
+     * @param type the {@link Type} of the content in the {@code json}
      * @return a {@link Map} with {@link String} as key and {@link IConvertible} as value
      */
-    public static Map<String, IConvertible> openFileToConvertibleMap(String jsonFile, Type type) {
-        try {
-            String fileContent = openFileToString(jsonFile);
+    public static Map<String, IConvertible> openFileToConvertibleMap(String json, Type type) {
+        java.lang.reflect.Type mapType = null;
+        switch (type) {
+            case ITEM:
+                mapType = new TypeToken<Map<String, JsonItem>>() {
+                }.getType();
+                break;
+            case THING:
+                // mapType =  new TypeToken<Map<String, JsonThing>>() {}.getType();
+                break;
+            case CHANNEL:
+                mapType = new TypeToken<Map<String, JsonChannelLink>>() {
+                }.getType();
+                break;
 
-            Gson gson = new GsonBuilder().create();
-            java.lang.reflect.Type mapType = null;
-            switch (type) {
-                case ITEM:
-                    mapType = new TypeToken<Map<String, JsonItem>>() {
-                    }.getType();
-                    break;
-                case THING:
-                    // mapType =  new TypeToken<Map<String, JsonThing>>() {}.getType();
-                    break;
-                case CHANNEL:
-                    mapType = new TypeToken<Map<String, JsonChannelLink>>() {
-                    }.getType();
-                    break;
-
-                default:
-                    log.error(FATAL, "Wrong type={}", type);
-                    break;
-            }
-
-            return gson.fromJson(fileContent, mapType);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            default:
+                log.error(FATAL, "Wrong type={}", type);
+                break;
         }
 
-        return null;
+        return GSON.fromJson(json, mapType);
     }
 
     /**
