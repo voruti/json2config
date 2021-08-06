@@ -5,7 +5,6 @@ import voruti.json2config.model.json.JsonChannelLink;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -40,8 +39,8 @@ public class ChannelAppender {
             List<JsonChannelLink> channelsList = SharedService.jsonToConvertibleMap(content, Type.CHANNEL).values().stream()
                     .map(JsonChannelLink.class::cast)
                     .collect(Collectors.toList());
-            log.trace("channelsList={} with size={}", channelsList, channelsList.size());
             log.info("Found {} channel links", channelsList.size());
+            log.trace("channelsList={}", channelsList);
 
             // search items files:
             List<String> itemsFiles = findItemsFilesInDir(directory);
@@ -49,8 +48,8 @@ public class ChannelAppender {
                     .map(ChannelAppender::getItemNamesFromFile)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
-            log.trace("itemNamesList={} with size={}", itemNamesList, itemNamesList.size());
             log.info("Found {} items", itemNamesList.size());
+            log.trace("itemNamesList={}", itemNamesList);
 
             // only items present in both lists:
             List<String> newItemNamesList = itemNamesList.stream().filter(n -> {
@@ -63,9 +62,8 @@ public class ChannelAppender {
             }).collect(Collectors.toList());
             List<JsonChannelLink> relevantChannelsList = channelsList.stream()
                     .filter(c -> newItemNamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
-            log.trace("relevantChannelsList={} with size={}",
-                    relevantChannelsList, relevantChannelsList.size());
             log.info("{} match with each other", relevantChannelsList.size());
+            log.trace("relevantChannelsList={}", relevantChannelsList);
 
             int count = 0;
             for (JsonChannelLink channel : relevantChannelsList) {
@@ -74,12 +72,11 @@ public class ChannelAppender {
                         count++;
                 }
             }
-            log.trace("Added count={} times", count);
             log.info("Successfully appended {} channel links!", count);
 
             log.warn("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
         } catch (IOException e) {
-            log.error("Can't open file {}", channelLinkFile);
+            log.error(Constants.LOG_CANT_OPEN_FILE, channelLinkFile);
         }
     }
 
@@ -91,8 +88,6 @@ public class ChannelAppender {
      * @return a {@link List} containing the names of the items
      */
     public static List<String> getItemNamesFromFile(String fileName) {
-        List<String> returnVal = new ArrayList<>();
-
         try {
             return Arrays.stream(SharedService.openFileToString(fileName).split("\n"))
                     .filter(line -> !line.isEmpty() && !line.toLowerCase().startsWith("group"))
@@ -100,10 +95,10 @@ public class ChannelAppender {
                     .filter(itemName -> !itemName.isEmpty())
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            log.error("Can't open file {}", fileName);
+            log.error(Constants.LOG_CANT_OPEN_FILE, fileName);
         }
 
-        return returnVal;
+        return List.of();
     }
 
     /**
@@ -135,7 +130,7 @@ public class ChannelAppender {
                 successful = SharedService.writeLinesToFile(modifiedLines, fileName);
             }
         } catch (IOException e) {
-            log.error("Can't open file {}", fileName);
+            log.error(Constants.LOG_CANT_OPEN_FILE, fileName);
         }
 
         return successful;

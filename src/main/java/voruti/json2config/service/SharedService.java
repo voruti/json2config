@@ -1,7 +1,6 @@
 package voruti.json2config.service;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import voruti.json2config.model.IConvertible;
@@ -17,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class SharedService {
+public final class SharedService {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new Gson();
 
 
     private SharedService() {

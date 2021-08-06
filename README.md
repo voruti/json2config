@@ -29,6 +29,9 @@ Alternatively you can adjust the program arguments to specify the file locations
 - The `-n` parameter allows you to disable this (converting) feature completely; if you want to only append the channel
   links.
 
+:exclamation:Item **dimensions** (value → dimension) currently will be lost in this process:exclamation: (They can - of
+course - manually be added afterwards)
+
 ### 2. Appending channel links from org.eclipse.smarthome.core.thing.link.ItemChannelLink.json to *.items files
 
 To append channel links to *already existing* .items files, you can use the second feature. If you already have
@@ -44,8 +47,8 @@ directory. Alternatively you can adjust the program arguments to specify the fil
 - The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specify the directory in which to search
   for *.items files.
 
-:exclamation:Channel Link **Profiles** currently will be lost in this process:exclamation: (They can - of course -
-manually be added afterwards)
+:exclamation:Channel Link **Profiles** (value → configuration → properties → profile) currently will be lost in this
+process:exclamation: (They can - of course - manually be added afterwards)
 
 #### Other program features
 

@@ -17,7 +17,7 @@ class IntegrationTest {
         // arrange:
         // load template .items file:
         Path pathTemplate = Paths.get(ClassLoader.getSystemResource("json.items").toURI());
-        String template = String.join(System.lineSeparator(), Files.readAllLines(pathTemplate))
+        String template = String.join("\n", Files.readAllLines(pathTemplate))
                 .replaceAll("[\\h\\t ]{2,}", " ");
 
         // act:
@@ -30,7 +30,7 @@ class IntegrationTest {
         // assert:
         // load generated .items file:
         Path pathGenerated = Paths.get("build/tmp/test/junit.items");
-        String generated = String.join(System.lineSeparator(), Files.readAllLines(pathGenerated))
+        String generated = String.join("\n", Files.readAllLines(pathGenerated))
                 .replaceAll("[\\h\\t ]{2,}", " ");
 
         assertEquals(template, generated);
