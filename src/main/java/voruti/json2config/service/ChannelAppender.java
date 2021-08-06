@@ -78,7 +78,7 @@ public class ChannelAppender {
             int count = 0;
             for (JsonChannelLink channel : relevantChannelsList) {
                 for (String iFile : itemsFiles) {
-                    if (setChannelToItemInFile(String.join(":", channel.getValue().getChannelUID().getSegments()), channel.getValue().getItemName(), iFile))
+                    if (setChannelToItemInFile(channel, iFile))
                         count++;
                 }
             }
@@ -115,15 +115,13 @@ public class ChannelAppender {
     }
 
     /**
-     * Appends the {@code channel} after {@code itemName} in {@code fileName}.
+     * Appends the {@code channelLink} after the item in {@code fileName}.
      *
-     * @param channel  the channel to append after the item
-     * @param itemName the item to search for
-     * @param fileName the file to search for the item
-     * @return {@code true} if the {@code channel} could be appended, {@code false}
-     * otherwise
+     * @param channelLink the channel link to append after the item
+     * @param fileName    the file to search for the item
+     * @return {@code true} if the {@code channelLink} could be appended, {@code false} otherwise
      */
-    public static boolean setChannelToItemInFile(String channel, String itemName, String fileName) {
+    public static boolean setChannelToItemInFile(JsonChannelLink channelLink, String fileName) {
         File file = new File(fileName);
 
         boolean returnVal = false;
@@ -143,9 +141,9 @@ public class ChannelAppender {
                         && !line.toLowerCase().startsWith("Group".toLowerCase())) {
 
                     String readItemName = searchNameInLine(line);
-                    if (readItemName != null && !readItemName.equalsIgnoreCase("") && readItemName.equals(itemName)) {
+                    if (readItemName != null && !readItemName.equalsIgnoreCase("") && readItemName.equals(channelLink.getValue().getItemName())) {
 
-                        line = String.format("%-160s {channel=\"%s\"}", line, channel).trim();
+                        line = channelLink.toConfigLine(line);
                         change = true;
                     }
                 }

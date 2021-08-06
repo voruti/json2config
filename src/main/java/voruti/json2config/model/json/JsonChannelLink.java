@@ -14,8 +14,8 @@ public class JsonChannelLink implements IConvertible {
 
 
     @Override
-    public String toConfigLine(String name) {
-        return null;
+    public String toConfigLine(String lineBefore) {
+        return String.format("%s {channel=\"%s\"}", lineBefore, String.join(":", value.channelUID.segments)).strip();
     }
 
 
@@ -27,20 +27,17 @@ public class JsonChannelLink implements IConvertible {
         private String itemName;
 
 
-        @Getter
         @ToString
-        public static class ChannelUID {
+        private static class ChannelUID {
             private List<String> segments;
         }
 
-        @Getter
         @ToString
-        public static class Configuration {
+        private static class Configuration {
             private Properties properties;
 
-            @Getter
             @ToString
-            public static class Properties {
+            private static class Properties {
                 private String profile;
             }
         }
