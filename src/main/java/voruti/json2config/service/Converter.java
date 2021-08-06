@@ -127,7 +127,7 @@ public class Converter {
                 IConvertible iconv = null;
                 switch (type) {
                     case ITEM:
-                        iconv = createItem(val);
+                        iconv = createItem(key, val);
                         break;
                     case THING:
                         // iconv = createThing(val);
@@ -154,10 +154,11 @@ public class Converter {
     /**
      * Creates a {@link Item} out of a {@link JSONObject}.
      *
+     * @param name    the name of the {@link Item} to create
      * @param content the {@link JSONObject}
      * @return the item as {@link Item}
      */
-    public static Item createItem(JSONObject content) {
+    public static Item createItem(String name, JSONObject content) {
         String itemType = "";
         String label = "";
         String category = "";
@@ -263,7 +264,7 @@ public class Converter {
             }
         }
 
-        return new Item(baseItemType, groupNames, itemType, tags, label, category, functionName, functionParams, dimension);
+        return new Item(name, baseItemType, groupNames, itemType, tags, label, category, functionName, functionParams, dimension);
     }
 
     public static void mapArray(Object elementList, String key, Object val) {
@@ -301,7 +302,7 @@ public class Converter {
 
             for (Entry<String, IConvertible> entry : map.entrySet()) {
                 log.trace("Generating line for {}: {}", entry.getKey(), entry.getValue());
-                String line = entry.getValue().toConfigLine(entry.getKey());
+                String line = entry.getValue().toConfigLine();
                 log.info("Created line=[{}]", line);
                 lines.add(line);
             }

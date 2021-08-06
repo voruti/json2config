@@ -18,6 +18,7 @@ import java.util.StringJoiner;
 @AllArgsConstructor
 public class Item implements IConvertible {
 
+    private String name;
     private String baseItemType;
     private List<String> groupNames;
     private String itemType;
@@ -33,11 +34,10 @@ public class Item implements IConvertible {
      * Formats a valid .items-file line. Uses every field except dimension (it's not
      * used? / within itemType).
      *
-     * @param name the name of the item
      * @return a item config line
      */
     @Override
-    public String toConfigLine(String name) {
+    public String toConfigLine() {
         String baseItemTypeString = baseItemType.isEmpty()
                 ? ""
                 : ":" + baseItemType;

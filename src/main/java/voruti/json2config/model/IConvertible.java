@@ -8,8 +8,7 @@ public interface IConvertible {
     /**
      * Converts an object/convertible to a config file line.
      *
-     * @param name the name of the object/convertible
      * @return a String representating a config file line
      */
-    String toConfigLine(String name);
+    String toConfigLine();
 }

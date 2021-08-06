@@ -19,7 +19,7 @@ public class Channel implements IConvertible {
 
 
     @Override
-    public String toConfigLine(String name) {
+    public String toConfigLine() {
         return "";
     }
 }
