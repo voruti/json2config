@@ -39,6 +39,8 @@ public class ChannelAppender {
      * @param directory       the directory in which to search for ".items" files
      */
     public static void start(String channelLinkFile, String directory) {
+        log.info("Starting ChannelAppender with channelLinkFile={}, directory={}", channelLinkFile, directory);
+
         // get the jsonObject:
         JSONObject jsonObject = Converter.openFileToJSONObject(channelLinkFile);
         // convert first elements to list of Channels:

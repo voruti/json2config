@@ -1,6 +1,5 @@
 package voruti.json2config;
 
-import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -11,7 +10,6 @@ import voruti.json2config.service.Converter.Type;
 /**
  * @author voruti
  */
-@Slf4j
 @Command(name = "java -jar json2config.jar", mixinStandardHelpOptions = true, version = "1.4",
         description = "Converts openHAB Items from JsonDB Storage files.")
 public class Starter implements Runnable {
@@ -58,16 +56,11 @@ public class Starter implements Runnable {
     public void run() {
         // start Converter:
         if (!noConverter) {
-            Type type = Type.ITEM;
-            log.info("Starting Converter with jsonFile={}, outFile={}, type={}",
-                    jsonFile, outFile, type);
-            Converter.start(jsonFile, outFile, type);
+            Converter.start(jsonFile, outFile, Type.ITEM);
         }
 
         // start ChannelAppender:
         if (doChannelLinks) {
-            log.info("Starting ChannelAppender with channelFile={}, directory={}",
-                    channelFile, directory);
             ChannelAppender.start(channelFile, directory);
         }
     }

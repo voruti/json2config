@@ -48,6 +48,8 @@ public class Converter {
      * @param type       type of file to convert
      */
     public static void start(String jsonFile, String outputFile, Type type) {
+        log.info("Starting Converter with jsonFile={}, outputFile={}, type={}", jsonFile, outputFile, type);
+
         // get the jsonObject:
         JSONObject jsonObject = openFileToJSONObject(jsonFile);
         // convert first elements to map of IConvertibles:
