@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 import voruti.json2config.model.IConvertible;
 import voruti.json2config.model.json.JsonChannelLink;
 import voruti.json2config.model.json.JsonItem;
@@ -21,7 +19,6 @@ import java.util.Map;
 @Slf4j
 public class SharedService {
 
-    private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
     private static final Gson GSON = new GsonBuilder().create();
 
 
@@ -38,7 +35,7 @@ public class SharedService {
      */
     public static String openFileToString(String fileName) throws IOException {
         Path path = Paths.get(fileName);
-        log.info("Reading lines at path={}", path);
+        log.debug("Reading lines at path={}", path);
         return String.join("\n", Files.readAllLines(path, Charset.defaultCharset()));
     }
 
@@ -64,10 +61,6 @@ public class SharedService {
                 mapType = new TypeToken<Map<String, JsonChannelLink>>() {
                 }.getType();
                 break;
-
-            default:
-                log.error(FATAL, "Wrong type={}", type);
-                break;
         }
 
         return GSON.fromJson(json, mapType);
@@ -87,11 +80,11 @@ public class SharedService {
         if (!lines.isEmpty()) {
             // writing to file:
             try {
-                log.info("Writing lines to file={}", fileName);
+                log.debug("Writing lines to file={}", fileName);
                 Files.write(Paths.get(fileName), lines, Charset.defaultCharset());
                 returnVal = true;
             } catch (IOException e) {
-                log.error(FATAL, "{} at writing file with lines={}", e, lines);
+                log.error("{} at writing file with lines={}", e, lines);
             }
         } else {
             log.warn("No objects in List lines={}", lines);

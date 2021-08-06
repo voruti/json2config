@@ -32,7 +32,7 @@ public class ChannelAppender {
      * @param directory       the directory in which to search for ".items" files
      */
     public static void start(String channelLinkFile, String directory) {
-        log.info("Starting ChannelAppender with channelLinkFile={}, directory={}", channelLinkFile, directory);
+        log.debug("Starting ChannelAppender with channelLinkFile={}, directory={}", channelLinkFile, directory);
 
         try {
             // open file:
@@ -42,7 +42,7 @@ public class ChannelAppender {
                     .map(JsonChannelLink.class::cast)
                     .collect(Collectors.toList());
             log.trace("channelsList={} with size={}", channelsList, channelsList.size());
-            System.out.printf("Found %s channel links.%n", channelsList.size());
+            log.info("Found {} channel links", channelsList.size());
 
             // search items files:
             List<String> itemsFiles = findItemsFilesInDir(directory);
@@ -51,7 +51,7 @@ public class ChannelAppender {
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
             log.trace("itemNamesList={} with size={}", itemNamesList, itemNamesList.size());
-            System.out.printf("Found %s items.%n", itemNamesList.size());
+            log.info("Found {} items", itemNamesList.size());
 
             // only items present in both lists:
             List<String> newItemNamesList = itemNamesList.stream().filter(n -> {
@@ -66,7 +66,7 @@ public class ChannelAppender {
                     .filter(c -> newItemNamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
             log.trace("relevantChannelsList={} with size={}",
                     relevantChannelsList, relevantChannelsList.size());
-            System.out.printf("%s match with each other.%n", relevantChannelsList.size());
+            log.info("{} match with each other", relevantChannelsList.size());
 
             int count = 0;
             for (JsonChannelLink channel : relevantChannelsList) {
@@ -76,9 +76,9 @@ public class ChannelAppender {
                 }
             }
             log.trace("Added count={} times", count);
-            System.out.printf("Successfully appended %s channel links!%n", count);
+            log.info("Successfully appended {} channel links!", count);
 
-            System.out.println("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
+            log.warn("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
         } catch (IOException e) {
             log.error("Can't open file {}", channelLinkFile);
         }

@@ -27,7 +27,7 @@ public class Converter {
      * @param type       type of file to convert
      */
     public static void start(String jsonFile, String outputFile, Type type) {
-        log.info("Starting Converter with jsonFile={}, outputFile={}, type={}", jsonFile, outputFile, type);
+        log.debug("Starting Converter with jsonFile={}, outputFile={}, type={}", jsonFile, outputFile, type);
 
         try {
             // open file:
