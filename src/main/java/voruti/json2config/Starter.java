@@ -1,7 +1,6 @@
 package voruti.json2config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import voruti.json2config.service.ChannelAppender;
 import voruti.json2config.service.Converter;
 import voruti.json2config.service.Converter.Type;
@@ -9,14 +8,14 @@ import voruti.json2config.service.Converter.Type;
 /**
  * @author voruti
  */
+@Slf4j
 public class Starter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Starter.class);
 
     private static final String DEFAULT_JSONFILE = "org.eclipse.smarthome.core.items.Item.json";
     private static final String DEFAULT_CHANNELFILE = "org.eclipse.smarthome.core.thing.link.ItemChannelLink.json";
     private static final String DEFAULT_OUTFILE = "json.items";
     private static final String DEFAULT_DIRECTORY = ".";
+
 
     public static void main(String[] args) {
         // args evaluating:
@@ -38,19 +37,19 @@ public class Starter {
         for (int i = 0; i < args.length; i++) {
             if (inNext) {
                 jsonFile = args[i];
-                LOGGER.info("Using jsonFile={}", jsonFile);
+                log.info("Using jsonFile={}", jsonFile);
                 inNext = false;
             } else if (chNext) {
                 channelFile = args[i];
-                LOGGER.info("Using channelFile={}", channelFile);
+                log.info("Using channelFile={}", channelFile);
                 chNext = false;
             } else if (outNext) {
                 outFile = args[i];
-                LOGGER.info("Using outFile={}", outFile);
+                log.info("Using outFile={}", outFile);
                 outNext = false;
             } else if (dirNext) {
                 directory = args[i];
-                LOGGER.info("Using directory={}", directory);
+                log.info("Using directory={}", directory);
                 dirNext = false;
             } else {
                 switch (args[i]) {
@@ -105,7 +104,7 @@ public class Starter {
             }
         }
         if (printHelp) {
-            LOGGER.warn("Wrong parameter usage");
+            log.warn("Wrong parameter usage");
             System.out.println(
                     "Usage: json2config-XXX.jar [--in <path>] [--out <path>] [--no-items] [--create-channel-links] [--directory] [--channel-file]");
             return;
@@ -114,14 +113,14 @@ public class Starter {
         // start Converter:
         if (doConverter) {
             Type type = Type.ITEM;
-            LOGGER.info("Starting Converter with jsonFile={}, outFile={}, type={}",
+            log.info("Starting Converter with jsonFile={}, outFile={}, type={}",
                     jsonFile, outFile, type);
             Converter.start(jsonFile, outFile, type);
         }
 
         // start ChannelAppender:
         if (doChannelLinks) {
-            LOGGER.info("Starting ChannelAppender with channelFile={}, directory={}",
+            log.info("Starting ChannelAppender with channelFile={}, directory={}",
                     channelFile, directory);
             ChannelAppender.start(channelFile, directory);
         }

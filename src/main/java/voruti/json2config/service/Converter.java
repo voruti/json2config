@@ -1,10 +1,9 @@
 package voruti.json2config.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import voruti.json2config.model.IConvertible;
@@ -31,9 +30,9 @@ import java.util.StringJoiner;
 /**
  * @author voruti
  */
+@Slf4j
 public class Converter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Converter.class);
     private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
 
 
@@ -76,7 +75,7 @@ public class Converter {
         try {
             sc = new Scanner(file);
 
-            LOGGER.info("Reading lines of file={} with Scanner={}", file, sc);
+            log.info("Reading lines of file={} with Scanner={}", file, sc);
             while (sc.hasNextLine()) {
                 str.append(sc.nextLine());
             }
@@ -84,10 +83,10 @@ public class Converter {
 
             jsonObject = new JSONObject(str.toString());
         } catch (JSONException eJ) {
-            LOGGER.error(FATAL, "File content={} can not be parsed to JSONObject", str);
+            log.error(FATAL, "File content={} can not be parsed to JSONObject", str);
             eJ.printStackTrace();
         } catch (FileNotFoundException eF) {
-            LOGGER.error(FATAL, "file={} can not be opened!", file);
+            log.error(FATAL, "file={} can not be opened!", file);
             eF.printStackTrace();
         }
 
@@ -117,7 +116,7 @@ public class Converter {
 
                 Object o = jsonObject.get(key);
                 if (!(o instanceof JSONObject)) {
-                    LOGGER.error(FATAL, "Value ({}) should be instanceof JSONObject, but is not!", o);
+                    log.error(FATAL, "Value ({}) should be instanceof JSONObject, but is not!", o);
                     break;
                 }
                 JSONObject val = (JSONObject) o;
@@ -135,15 +134,15 @@ public class Converter {
                         break;
 
                     default:
-                        LOGGER.error(FATAL, "Wrong type={}", type);
+                        log.error(FATAL, "Wrong type={}", type);
                         break loopW;
                 }
 
-                LOGGER.info("Adding IConvertible={} to convertiblesMap", iconv);
+                log.info("Adding IConvertible={} to convertiblesMap", iconv);
                 returnVal.put(key, iconv);
             }
         } else {
-            LOGGER.warn("jsonObject is null");
+            log.warn("jsonObject is null");
         }
 
         return returnVal;
@@ -174,7 +173,7 @@ public class Converter {
             switch (key1) {
                 case "class":
                     if (!val1.equals("org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem")) {
-                        LOGGER.warn("class={} different than expected!", val1);
+                        log.warn("class={} different than expected!", val1);
                     }
                     break;
                 case "value":
@@ -190,7 +189,7 @@ public class Converter {
                                     if (val2 instanceof String) {
                                         itemType = (String) val2;
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof String!",
+                                        log.warn("{}={} is not instanceof String!",
                                                 key2, val2);
                                     }
                                     break;
@@ -198,7 +197,7 @@ public class Converter {
                                     if (val2 instanceof String) {
                                         label = (String) val2;
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof String!",
+                                        log.warn("{}={} is not instanceof String!",
                                                 key2, val2);
                                     }
                                     break;
@@ -206,7 +205,7 @@ public class Converter {
                                     if (val2 instanceof String) {
                                         category = (String) val2;
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof String!",
+                                        log.warn("{}={} is not instanceof String!",
                                                 key2, val2);
                                     }
                                     break;
@@ -214,7 +213,7 @@ public class Converter {
                                     if (val2 instanceof String) {
                                         baseItemType = (String) val2;
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof String!",
+                                        log.warn("{}={} is not instanceof String!",
                                                 key2, val2);
                                     }
                                     break;
@@ -222,7 +221,7 @@ public class Converter {
                                     if (val2 instanceof String) {
                                         functionName = (String) val2;
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof String!",
+                                        log.warn("{}={} is not instanceof String!",
                                                 key2, val2);
                                     }
                                     break;
@@ -239,24 +238,24 @@ public class Converter {
                                     if (val2 instanceof String) {
                                         dimension = (String) val2;
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof String!",
+                                        log.warn("{}={} is not instanceof String!",
                                                 key2, val2);
                                     }
                                     break;
 
                                 default:
-                                    LOGGER.warn("Unexpected key={}", key2);
+                                    log.warn("Unexpected key={}", key2);
                                     break;
                             }
                         }
                         break;
                     } else {
-                        LOGGER.warn("{}={} is not instanceof JSONObject!", key1, val1);
+                        log.warn("{}={} is not instanceof JSONObject!", key1, val1);
                     }
                     break;
 
                 default:
-                    LOGGER.warn("Unexpected key={}", key1);
+                    log.warn("Unexpected key={}", key1);
                     break;
             }
         }
@@ -286,11 +285,11 @@ public class Converter {
                         ((Collection<String>) elementList).add(string);
                     }
                 } else {
-                    LOGGER.warn("JSONArray={} item={} is not instanceof String!", key, o);
+                    log.warn("JSONArray={} item={} is not instanceof String!", key, o);
                 }
             }
         } else {
-            LOGGER.warn("{}={} is not instanceof JSONArray!", key, val);
+            log.warn("{}={} is not instanceof JSONArray!", key, val);
         }
     }
 
@@ -308,9 +307,9 @@ public class Converter {
             List<String> lines = new ArrayList<>();
 
             for (Map.Entry<String, IConvertible> entry : map.entrySet()) {
-                LOGGER.trace("Generating line for {}: {}", entry.getKey(), entry.getValue());
+                log.trace("Generating line for {}: {}", entry.getKey(), entry.getValue());
                 String line = entry.getValue().toConfigLine(entry.getKey());
-                LOGGER.info("Created line=[{}]", line);
+                log.info("Created line=[{}]", line);
                 lines.add(line);
             }
 
@@ -328,7 +327,7 @@ public class Converter {
                 last = now;
             }
         } else {
-            LOGGER.warn("No objects in map={}", map);
+            log.warn("No objects in map={}", map);
         }
 
         return newLines;
@@ -348,16 +347,16 @@ public class Converter {
         if (!lines.isEmpty()) {
             // writing to file:
             try {
-                LOGGER.info("Writing lines to file={}", fileName);
+                log.info("Writing lines to file={}", fileName);
                 Files.write(Paths.get(fileName), lines, Charset.defaultCharset());
                 returnVal = true;
             } catch (IOException e) {
-                LOGGER.error(FATAL, "{} at writing file with lines={}", e, lines);
+                log.error(FATAL, "{} at writing file with lines={}", e, lines);
                 e.printStackTrace();
                 returnVal = false;
             }
         } else {
-            LOGGER.warn("No objects in List lines={}", lines);
+            log.warn("No objects in List lines={}", lines);
             returnVal = false;
         }
 

@@ -1,8 +1,7 @@
 package voruti.json2config.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import voruti.json2config.model.Channel;
@@ -21,9 +20,9 @@ import java.util.stream.Collectors;
 /**
  * @author voruti
  */
+@Slf4j
 public class ChannelAppender {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChannelAppender.class);
     private static final Marker FATAL = MarkerFactory.getMarker("FATAL");
 
 
@@ -46,7 +45,7 @@ public class ChannelAppender {
         List<Channel> channelsList = Converter.goThroughFirstEntriesOfJSONObject(jsonObject, Converter.Type.CHANNEL).values().stream()
                 .map(Channel.class::cast)
                 .collect(Collectors.toList());
-        LOGGER.trace("channelsList={} with size={}", channelsList, channelsList.size());
+        log.trace("channelsList={} with size={}", channelsList, channelsList.size());
         System.out.printf("Found %s channel links.%n", channelsList.size());
 
         // search items files:
@@ -55,7 +54,7 @@ public class ChannelAppender {
                 .map(ChannelAppender::getItemnamesFromFile)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        LOGGER.trace("itemnamesList={} with size={}", itemnamesList, itemnamesList.size());
+        log.trace("itemnamesList={} with size={}", itemnamesList, itemnamesList.size());
         System.out.printf("Found %s items.%n", itemnamesList.size());
 
         // only items present in both lists:
@@ -69,7 +68,7 @@ public class ChannelAppender {
         }).collect(Collectors.toList());
         List<Channel> relevantChannelsList = channelsList.stream()
                 .filter(c -> newItemnamesList.contains(c.getItemName())).collect(Collectors.toList());
-        LOGGER.trace("relevantChannelsList={} with size={}",
+        log.trace("relevantChannelsList={} with size={}",
                 relevantChannelsList, relevantChannelsList.size());
         System.out.printf("%s match with each other.%n", relevantChannelsList.size());
 
@@ -80,7 +79,7 @@ public class ChannelAppender {
                     count++;
             }
         }
-        LOGGER.trace("Added count={} times", count);
+        log.trace("Added count={} times", count);
         System.out.printf("Successfully appended %s channel links!%n", count);
 
         System.out.println("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
@@ -104,7 +103,7 @@ public class ChannelAppender {
             switch (key1) {
                 case "class":
                     if (!val1.equals("org.eclipse.smarthome.core.thing.link.ItemChannelLink")) {
-                        LOGGER.warn("class={} different than expected!", val1);
+                        log.warn("class={} different than expected!", val1);
                     }
                     break;
                 case "value":
@@ -127,11 +126,11 @@ public class ChannelAppender {
                                             if ("segments".equals(key3)) {
                                                 Converter.mapArray(channelUID, key3, val3);
                                             } else {
-                                                LOGGER.warn("Unexpected key={}", key3);
+                                                log.warn("Unexpected key={}", key3);
                                             }
                                         }
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof JSONObject!",
+                                        log.warn("{}={} is not instanceof JSONObject!",
                                                 key2, val2);
                                     }
                                     break;
@@ -141,24 +140,24 @@ public class ChannelAppender {
                                     if (val2 instanceof String) {
                                         itemName = (String) val2;
                                     } else {
-                                        LOGGER.warn("{}={} is not instanceof String!",
+                                        log.warn("{}={} is not instanceof String!",
                                                 key2, val2);
                                     }
                                     break;
 
                                 default:
-                                    LOGGER.warn("Unexpected key={}", key2);
+                                    log.warn("Unexpected key={}", key2);
                                     break;
                             }
                         }
                         break;
                     } else {
-                        LOGGER.warn("{}={} is not instanceof JSONObject!", key1, val1);
+                        log.warn("{}={} is not instanceof JSONObject!", key1, val1);
                     }
                     break;
 
                 default:
-                    LOGGER.warn("Unexpected key={}", key1);
+                    log.warn("Unexpected key={}", key1);
                     break;
             }
         }
@@ -184,7 +183,7 @@ public class ChannelAppender {
         Scanner sc;
         try {
             sc = new Scanner(file);
-            LOGGER.info("Reading lines of file={} with Scanner={}", file, sc);
+            log.info("Reading lines of file={} with Scanner={}", file, sc);
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
@@ -199,7 +198,7 @@ public class ChannelAppender {
 
             sc.close();
         } catch (FileNotFoundException eF) {
-            LOGGER.error(FATAL, "file={} can not be opened!", file);
+            log.error(FATAL, "file={} can not be opened!", file);
             eF.printStackTrace();
         }
 
@@ -227,7 +226,7 @@ public class ChannelAppender {
         try {
             sc = new Scanner(file);
 
-            LOGGER.info("Reading lines of file={} with Scanner={}", file, sc);
+            log.info("Reading lines of file={} with Scanner={}", file, sc);
             while (sc.hasNextLine()) {
 
                 String line = sc.nextLine();
@@ -250,7 +249,7 @@ public class ChannelAppender {
                 returnVal = Converter.writeLinesToFile(saveLines, fileName);
             }
         } catch (FileNotFoundException eF) {
-            LOGGER.error(FATAL, "file={} can not be opened!", file);
+            log.error(FATAL, "file={} can not be opened!", file);
             eF.printStackTrace();
         }
 
