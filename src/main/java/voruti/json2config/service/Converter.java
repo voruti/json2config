@@ -1,13 +1,15 @@
 package voruti.json2config.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import voruti.json2config.model.IConvertible;
-import voruti.json2config.model.Item;
+import voruti.json2config.model.json.JsonChannelLink;
+import voruti.json2config.model.json.JsonItem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,14 +20,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.StringJoiner;
 
 /**
@@ -51,10 +49,8 @@ public class Converter {
     public static void start(String jsonFile, String outputFile, Type type) {
         log.info("Starting Converter with jsonFile={}, outputFile={}, type={}", jsonFile, outputFile, type);
 
-        // get the jsonObject:
-        JSONObject jsonObject = openFileToJSONObject(jsonFile);
-        // convert first elements to map of IConvertibles:
-        Map<String, IConvertible> convertibleMap = goThroughFirstEntriesOfJSONObject(jsonObject, type);
+        // load file into map:
+        Map<String, IConvertible> convertibleMap = openFileToConvertibleMap(jsonFile, type);
         // get lines from map:
         List<String> lines = convertibleMapToLines(convertibleMap);
         // write file:
@@ -62,211 +58,72 @@ public class Converter {
     }
 
     /**
-     * Opens and reads file {@code fileName} and returns it content as
-     * {@link JSONObject}.
+     * Open the file with {@code fileName} and return its content as {@link String}.
      *
-     * @param fileName the file to open and read
-     * @return the {@link JSONObject} containing the content of the file, if it
-     * could be successfully opened, otherwise {@code null}
+     * @param fileName the path/name of the file to open
+     * @return a {@link String} with the content
+     * @throws FileNotFoundException if the file can't be found
      */
-    public static JSONObject openFileToJSONObject(String fileName) {
-        JSONObject jsonObject = null;
-
+    public static String openFileToString(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
         StringBuilder str = new StringBuilder();
-        Scanner sc;
+        Scanner sc = new Scanner(file);
+
+        log.info("Reading lines of file={} with Scanner={}", file, sc);
+        while (sc.hasNextLine()) {
+            str.append(sc.nextLine());
+        }
+        sc.close();
+
+        return str.toString();
+    }
+
+    /**
+     * Open {@code jsonFile} and convert its content with {@link Gson} to a {@link Map}.
+     *
+     * @param jsonFile the path/name of the file to open
+     * @param type     the {@link Type} of the content in the {@code jsonFile}
+     * @return a {@link Map} with {@link String} as key and {@link IConvertible} as value
+     */
+    public static Map<String, IConvertible> openFileToConvertibleMap(String jsonFile, Type type) {
         try {
-            sc = new Scanner(file);
+            String fileContent = openFileToString(jsonFile);
 
-            log.info("Reading lines of file={} with Scanner={}", file, sc);
-            while (sc.hasNextLine()) {
-                str.append(sc.nextLine());
-            }
-            sc.close();
-
-            jsonObject = new JSONObject(str.toString());
-        } catch (JSONException eJ) {
-            log.error(FATAL, "File content={} can not be parsed to JSONObject", str);
-            eJ.printStackTrace();
-        } catch (FileNotFoundException eF) {
-            log.error(FATAL, "file={} can not be opened!", file);
-            eF.printStackTrace();
-        }
-
-        return jsonObject;
-    }
-
-    /**
-     * Creates a {@link Map} of all "first values" of the {@code jsonObject}. Uses
-     * {@code type} to determine in which {@link Type} to convert the
-     * {@code jsonObject} entries.
-     *
-     * @param jsonObject the {@link JSONObject} to convert
-     * @param type       the {@link Type} in which to convert the {@code jsonObject}
-     *                   entries
-     * @return a {@link Map} containing the {@link IConvertible IConvertibles} of
-     * the {@code jsonObject}; contains no entries if {@code jsonObject} is
-     * {@code null} (or wrong {@code type} is found)
-     */
-    public static Map<String, IConvertible> goThroughFirstEntriesOfJSONObject(JSONObject jsonObject, Type type) {
-        Map<String, IConvertible> returnVal = new HashMap<>();
-
-        if (jsonObject != null) {
-            Iterator<String> ite = jsonObject.keys();
-            loopW:
-            while (ite.hasNext()) {
-                String key = ite.next();
-
-                Object o = jsonObject.get(key);
-                if (!(o instanceof JSONObject)) {
-                    log.error(FATAL, "Value ({}) should be instanceof JSONObject, but is not!", o);
+            Gson gson = new GsonBuilder().create();
+            java.lang.reflect.Type mapType = null;
+            switch (type) {
+                case ITEM:
+                    mapType = new TypeToken<Map<String, JsonItem>>() {
+                    }.getType();
                     break;
-                }
-                JSONObject val = (JSONObject) o;
-
-                IConvertible iconv = null;
-                switch (type) {
-                    case ITEM:
-                        iconv = createItem(key, val);
-                        break;
-                    case THING:
-                        // iconv = createThing(val);
-                        break;
-                    case CHANNEL:
-                        iconv = ChannelAppender.createChannel(val);
-                        break;
-
-                    default:
-                        log.error(FATAL, "Wrong type={}", type);
-                        break loopW;
-                }
-
-                log.info("Adding IConvertible={} to convertiblesMap", iconv);
-                returnVal.put(key, iconv);
-            }
-        } else {
-            log.warn("jsonObject is null");
-        }
-
-        return returnVal;
-    }
-
-    /**
-     * Creates a {@link Item} out of a {@link JSONObject}.
-     *
-     * @param name    the name of the {@link Item} to create
-     * @param content the {@link JSONObject}
-     * @return the item as {@link Item}
-     */
-    public static Item createItem(String name, JSONObject content) {
-        String itemType = "";
-        String label = "";
-        String category = "";
-        String baseItemType = "";
-        String functionName = "";
-        List<String> groupNames = new ArrayList<>();
-        Set<String> tags = new HashSet<>();
-        List<String> functionParams = new ArrayList<>();
-        String dimension = "";
-
-        Iterator<String> ite1 = content.keys();
-        while (ite1.hasNext()) {
-            String key1 = ite1.next();
-            Object val1 = content.get(key1);
-
-            switch (key1) {
-                case "class":
-                    if (!val1.equals("org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem")) {
-                        log.warn("class={} different than expected!", val1);
-                    }
+                case THING:
+                    // mapType =  new TypeToken<Map<String, JsonThing>>() {}.getType();
                     break;
-                case "value":
-                    if (val1 instanceof JSONObject) {
-                        JSONObject jso2 = (JSONObject) val1;
-                        Iterator<String> ite2 = jso2.keys();
-                        while (ite2.hasNext()) {
-                            String key2 = ite2.next();
-                            Object val2 = jso2.get(key2);
-
-                            switch (key2) {
-                                case "itemType":
-                                    if (val2 instanceof String) {
-                                        itemType = (String) val2;
-                                    } else {
-                                        log.warn("{}={} is not instanceof String!",
-                                                key2, val2);
-                                    }
-                                    break;
-                                case "label":
-                                    if (val2 instanceof String) {
-                                        label = (String) val2;
-                                    } else {
-                                        log.warn("{}={} is not instanceof String!",
-                                                key2, val2);
-                                    }
-                                    break;
-                                case "category":
-                                    if (val2 instanceof String) {
-                                        category = (String) val2;
-                                    } else {
-                                        log.warn("{}={} is not instanceof String!",
-                                                key2, val2);
-                                    }
-                                    break;
-                                case "baseItemType":
-                                    if (val2 instanceof String) {
-                                        baseItemType = (String) val2;
-                                    } else {
-                                        log.warn("{}={} is not instanceof String!",
-                                                key2, val2);
-                                    }
-                                    break;
-                                case "functionName":
-                                    if (val2 instanceof String) {
-                                        functionName = (String) val2;
-                                    } else {
-                                        log.warn("{}={} is not instanceof String!",
-                                                key2, val2);
-                                    }
-                                    break;
-                                case "groupNames":
-                                    mapArray(groupNames, key2, val2);
-                                    break;
-                                case "tags":
-                                    mapArray(tags, key2, val2);
-                                    break;
-                                case "functionParams":
-                                    mapArray(functionParams, key2, val2);
-                                    break;
-                                case "dimension":
-                                    if (val2 instanceof String) {
-                                        dimension = (String) val2;
-                                    } else {
-                                        log.warn("{}={} is not instanceof String!",
-                                                key2, val2);
-                                    }
-                                    break;
-
-                                default:
-                                    log.warn("Unexpected key={}", key2);
-                                    break;
-                            }
-                        }
-                        break;
-                    } else {
-                        log.warn("{}={} is not instanceof JSONObject!", key1, val1);
-                    }
+                case CHANNEL:
+                    mapType = new TypeToken<Map<String, JsonChannelLink>>() {
+                    }.getType();
                     break;
 
                 default:
-                    log.warn("Unexpected key={}", key1);
+                    log.error(FATAL, "Wrong type={}", type);
                     break;
             }
+
+            return gson.fromJson(fileContent, mapType);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
-        return new Item(name, baseItemType, groupNames, itemType, tags, label, category, functionName, functionParams, dimension);
+        return null;
     }
 
+    /**
+     * Add entries of {@link JSONArray} {@code val} to {@code elementList}
+     *
+     * @param elementList the {@link StringJoiner} or {@link Collection} to which to add the elements
+     * @param key         used for logging
+     * @param val         a {@link JSONArray}
+     */
     public static void mapArray(Object elementList, String key, Object val) {
         if (val instanceof JSONArray) {
             for (Object o : (JSONArray) val) {
@@ -302,7 +159,7 @@ public class Converter {
 
             for (Entry<String, IConvertible> entry : map.entrySet()) {
                 log.trace("Generating line for {}: {}", entry.getKey(), entry.getValue());
-                String line = entry.getValue().toConfigLine();
+                String line = entry.getValue().toConfigLine(entry.getKey());
                 log.info("Created line=[{}]", line);
                 lines.add(line);
             }

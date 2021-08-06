@@ -1,20 +1,17 @@
 package voruti.json2config.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import voruti.json2config.model.Channel;
+import voruti.json2config.model.json.JsonChannelLink;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 /**
@@ -41,11 +38,9 @@ public class ChannelAppender {
     public static void start(String channelLinkFile, String directory) {
         log.info("Starting ChannelAppender with channelLinkFile={}, directory={}", channelLinkFile, directory);
 
-        // get the jsonObject:
-        JSONObject jsonObject = Converter.openFileToJSONObject(channelLinkFile);
-        // convert first elements to list of Channels:
-        List<Channel> channelsList = Converter.goThroughFirstEntriesOfJSONObject(jsonObject, Converter.Type.CHANNEL).values().stream()
-                .map(Channel.class::cast)
+        // load file to list of channel links:
+        List<JsonChannelLink> channelsList = Converter.openFileToConvertibleMap(channelLinkFile, Converter.Type.CHANNEL).values().stream()
+                .map(JsonChannelLink.class::cast)
                 .collect(Collectors.toList());
         log.trace("channelsList={} with size={}", channelsList, channelsList.size());
         System.out.printf("Found %s channel links.%n", channelsList.size());
@@ -61,23 +56,23 @@ public class ChannelAppender {
 
         // only items present in both lists:
         List<String> newItemnamesList = itemnamesList.stream().filter(n -> {
-            for (Channel channel : channelsList) {
-                if (channel.getItemName().equals(n)) {
+            for (JsonChannelLink channel : channelsList) {
+                if (channel.getValue().getItemName().equals(n)) {
                     return true;
                 }
             }
             return false;
         }).collect(Collectors.toList());
-        List<Channel> relevantChannelsList = channelsList.stream()
-                .filter(c -> newItemnamesList.contains(c.getItemName())).collect(Collectors.toList());
+        List<JsonChannelLink> relevantChannelsList = channelsList.stream()
+                .filter(c -> newItemnamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
         log.trace("relevantChannelsList={} with size={}",
                 relevantChannelsList, relevantChannelsList.size());
         System.out.printf("%s match with each other.%n", relevantChannelsList.size());
 
         int count = 0;
-        for (Channel channel : relevantChannelsList) {
+        for (JsonChannelLink channel : relevantChannelsList) {
             for (String iFile : itemsFiles) {
-                if (setChannelToItemInFile(channel.getChannelUID(), channel.getItemName(), iFile))
+                if (setChannelToItemInFile(String.join(":", channel.getValue().getChannelUID().getSegments()), channel.getValue().getItemName(), iFile))
                     count++;
             }
         }
@@ -85,86 +80,6 @@ public class ChannelAppender {
         System.out.printf("Successfully appended %s channel links!%n", count);
 
         System.out.println("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
-    }
-
-    /**
-     * Creates a {@link Channel} out of a {@link JSONObject}.
-     *
-     * @param content the {@link JSONObject}
-     * @return the channel as {@link Channel}
-     */
-    public static Channel createChannel(JSONObject content) {
-        String itemName = "";
-        StringJoiner channelUID = new StringJoiner(":");
-
-        Iterator<String> ite1 = content.keys();
-        while (ite1.hasNext()) {
-            String key1 = ite1.next();
-            Object val1 = content.get(key1);
-
-            switch (key1) {
-                case "class":
-                    if (!val1.equals("org.eclipse.smarthome.core.thing.link.ItemChannelLink")) {
-                        log.warn("class={} different than expected!", val1);
-                    }
-                    break;
-                case "value":
-                    if (val1 instanceof JSONObject) {
-                        JSONObject jso2 = (JSONObject) val1;
-                        Iterator<String> ite2 = jso2.keys();
-                        while (ite2.hasNext()) {
-                            String key2 = ite2.next();
-                            Object val2 = jso2.get(key2);
-
-                            switch (key2) {
-                                case "channelUID":
-                                    if (val2 instanceof JSONObject) {
-                                        JSONObject jso3 = (JSONObject) val2;
-                                        Iterator<String> ite3 = jso3.keys();
-                                        while (ite3.hasNext()) {
-                                            String key3 = ite3.next();
-                                            Object val3 = jso3.get(key3);
-
-                                            if ("segments".equals(key3)) {
-                                                Converter.mapArray(channelUID, key3, val3);
-                                            } else {
-                                                log.warn("Unexpected key={}", key3);
-                                            }
-                                        }
-                                    } else {
-                                        log.warn("{}={} is not instanceof JSONObject!",
-                                                key2, val2);
-                                    }
-                                    break;
-                                case "configuration":
-                                    break;
-                                case "itemName":
-                                    if (val2 instanceof String) {
-                                        itemName = (String) val2;
-                                    } else {
-                                        log.warn("{}={} is not instanceof String!",
-                                                key2, val2);
-                                    }
-                                    break;
-
-                                default:
-                                    log.warn("Unexpected key={}", key2);
-                                    break;
-                            }
-                        }
-                        break;
-                    } else {
-                        log.warn("{}={} is not instanceof JSONObject!", key1, val1);
-                    }
-                    break;
-
-                default:
-                    log.warn("Unexpected key={}", key1);
-                    break;
-            }
-        }
-
-        return new Channel(itemName, channelUID.toString());
     }
 
     /**
