@@ -42,7 +42,7 @@ public class ChannelAppender {
             // open file:
             String content = Converter.openFileToString(channelLinkFile);
             // map to list of channel links:
-            List<JsonChannelLink> channelsList = Converter.openFileToConvertibleMap(content, Converter.Type.CHANNEL).values().stream()
+            List<JsonChannelLink> channelsList = Converter.jsonToConvertibleMap(content, Converter.Type.CHANNEL).values().stream()
                     .map(JsonChannelLink.class::cast)
                     .collect(Collectors.toList());
             log.trace("channelsList={} with size={}", channelsList, channelsList.size());

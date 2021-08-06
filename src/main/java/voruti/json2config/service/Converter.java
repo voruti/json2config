@@ -54,7 +54,7 @@ public class Converter {
             // open file:
             String content = openFileToString(jsonFile);
             // map into map:
-            Map<String, IConvertible> convertibleMap = openFileToConvertibleMap(content, type);
+            Map<String, IConvertible> convertibleMap = jsonToConvertibleMap(content, type);
             // get lines from map:
             List<String> lines = convertibleMapToLines(convertibleMap);
             // write file:
@@ -92,7 +92,7 @@ public class Converter {
      * @param type the {@link Type} of the content in the {@code json}
      * @return a {@link Map} with {@link String} as key and {@link IConvertible} as value
      */
-    public static Map<String, IConvertible> openFileToConvertibleMap(String json, Type type) {
+    public static Map<String, IConvertible> jsonToConvertibleMap(String json, Type type) {
         java.lang.reflect.Type mapType = null;
         switch (type) {
             case ITEM:
