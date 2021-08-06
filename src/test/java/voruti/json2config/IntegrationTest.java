@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class IntegrationTest {
 
     @Test
-    void example1() throws IOException, URISyntaxException {
+    void openhab2_example1() throws IOException, URISyntaxException {
         // arrange:
         // load template .items file:
         Path pathTemplate = Paths.get(ClassLoader.getSystemResource("json.items").toURI());
