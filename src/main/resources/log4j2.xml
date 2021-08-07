@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss.SSS} %level]: %logger{36} - %msg%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="voruti.json2config" additivity="false" level="info">
+            <AppenderRef ref="LogToConsole" />
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="LogToConsole" />
+        </Root>
+    </Loggers>
+</Configuration>

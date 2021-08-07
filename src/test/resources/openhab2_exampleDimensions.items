@@ -1,0 +1,13 @@
+Group:Contact:NAND(OPEN,CLOSED) GroupTest
+
+Number                         Dim1
+Number:Acceleration            Dim7
+Number:Angle                   Dim6
+Number:Dimensionless           Dim10
+Number:Length                  Dim5
+Number:Mass                    Dim11
+Number:Pressure                Dim3
+Number:Speed                   Dim4
+Number:Temperature             Dim2
+Number:Time                    Dim9
+Number:VolumetricFlowRate      Dim8
