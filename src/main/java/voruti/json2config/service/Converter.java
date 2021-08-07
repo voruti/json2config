@@ -37,6 +37,8 @@ public class Converter {
             List<String> lines = convertibleMapToLines(convertibleMap);
             // write file:
             SharedService.writeLinesToFile(lines, outputFile);
+
+            log.info("Written entries of type {} to file {}!", type, outputFile);
         } catch (IOException e) {
             log.error("Can't open file {}", jsonFile);
         }
