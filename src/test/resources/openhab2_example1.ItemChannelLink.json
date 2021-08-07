@@ -1,0 +1,116 @@
+{
+  "FF_FamilyRoom_Motion -\u003e mqtt:topic:3621578b:switch": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "3621578b",
+          "switch"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "FF_FamilyRoom_Motion"
+    }
+  },
+  "FF_KidsRoom_Power -\u003e mqtt:topic:d589b50d:power": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "d589b50d",
+          "power"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "FF_KidsRoom_Power"
+    }
+  },
+  "FF_Toilet_Light -\u003e mqtt:topic:52b61fd6:light": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "52b61fd6",
+          "light"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "FF_Toilet_Light"
+    }
+  },
+  "GF_Kitchen_Light -\u003e mqtt:topic:40d4c19b:light": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "40d4c19b",
+          "light"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "GF_Kitchen_Light"
+    }
+  },
+  "FF_Library_Light -\u003e mqtt:topic:1c4c5e84:light": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "1c4c5e84",
+          "light"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "FF_Library_Light"
+    }
+  },
+  "GF_Bathroom_Window -\u003e mqtt:topic:4118d16f:window": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "4118d16f",
+          "window"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "GF_Bathroom_Window"
+    }
+  }
+}

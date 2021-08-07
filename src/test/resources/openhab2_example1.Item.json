@@ -1,0 +1,545 @@
+{
+  "GF_Corridor": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "GF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Corridor"
+      ],
+      "label": "Corridor",
+      "category": "corridor"
+    }
+  },
+  "FF": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "FirstFloor"
+      ],
+      "label": "First Floor",
+      "category": "firstfloor"
+    }
+  },
+  "gPower": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "baseItemType": "Switch",
+      "groupNames": [
+        "Home"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Switch",
+        "Switchable"
+      ],
+      "label": "Power Outlet",
+      "category": "poweroutlet",
+      "functionName": "OR",
+      "functionParams": [
+        "ON",
+        "OFF"
+      ]
+    }
+  },
+  "GF_LivingRoom": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "GF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "LivingRoom"
+      ],
+      "label": "Living Room",
+      "category": "sofa"
+    }
+  },
+  "FF_GuestRoom_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_GuestRoom",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "FF_FamilyRoom_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_FamilyRoom",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "gLight": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "baseItemType": "Switch",
+      "groupNames": [
+        "Home"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light",
+      "functionName": "OR",
+      "functionParams": [
+        "ON",
+        "OFF"
+      ]
+    }
+  },
+  "GF_Kitchen_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "GF_Kitchen",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "FF_Toilet": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "FF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Bathroom"
+      ],
+      "label": "Toilet",
+      "category": "toilet"
+    }
+  },
+  "GF_Bedroom": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "GF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Bedroom"
+      ],
+      "label": "Bedroom",
+      "category": "bedroom"
+    }
+  },
+  "FF_Toilet_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_Toilet",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "GF_Corridor_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "GF_Corridor",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "GF_Bathroom": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "GF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Bathroom"
+      ],
+      "label": "Bathroom",
+      "category": "bath"
+    }
+  },
+  "Home": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Group",
+      "tags": [
+        "Building"
+      ],
+      "label": "Our Home",
+      "category": "house"
+    }
+  },
+  "GF": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "GroundFloor"
+      ],
+      "label": "Ground Floor",
+      "category": "groundfloor"
+    }
+  },
+  "FF_KidsRoom_Power": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_KidsRoom",
+        "gPower"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Switch",
+        "Switchable"
+      ],
+      "label": "Power Outlet",
+      "category": "poweroutlet"
+    }
+  },
+  "gMotion": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "baseItemType": "Switch",
+      "groupNames": [
+        "Home"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "MotionDetector",
+        "Switchable"
+      ],
+      "label": "Motion Sensor",
+      "category": "motion",
+      "functionName": "OR",
+      "functionParams": [
+        "ON",
+        "OFF"
+      ]
+    }
+  },
+  "gWindow": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "baseItemType": "Contact",
+      "groupNames": [
+        "Home"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Window"
+      ],
+      "label": "Window",
+      "category": "window",
+      "functionName": "OR",
+      "functionParams": [
+        "OPEN",
+        "CLOSED"
+      ]
+    }
+  },
+  "FF_Library_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_Library",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "FF_Library": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "FF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Room"
+      ],
+      "label": "Library",
+      "category": "office"
+    }
+  },
+  "GF_Bathroom_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "GF_Bathroom",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "FF_GuestRoom": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "FF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Room"
+      ],
+      "label": "Guest Room",
+      "category": "parents_4_3"
+    }
+  },
+  "GF_Bathroom_Window": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "GF_Bathroom",
+        "gWindow"
+      ],
+      "itemType": "Contact",
+      "tags": [
+        "Window"
+      ],
+      "label": "Window",
+      "category": "window"
+    }
+  },
+  "GF_LivingRoom_Power": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "GF_LivingRoom",
+        "gPower"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Switch",
+        "Switchable"
+      ],
+      "label": "Power Outlet",
+      "category": "poweroutlet"
+    }
+  },
+  "FF_FamilyRoom": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "FF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Room"
+      ],
+      "label": "Family Room",
+      "category": "parents_2_4"
+    }
+  },
+  "FF_Corridor": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "FF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Corridor"
+      ],
+      "label": "Corridor",
+      "category": "corridor"
+    }
+  },
+  "FF_KidsRoom_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_KidsRoom",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "FF_KidsRoom": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "FF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Room"
+      ],
+      "label": "Kids Room",
+      "category": "girl_3"
+    }
+  },
+  "GF_Bedroom_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "GF_Bedroom",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "FF_Corridor_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_Corridor",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  },
+  "GF_Kitchen": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "Home",
+        "GF"
+      ],
+      "itemType": "Group",
+      "tags": [
+        "Kitchen"
+      ],
+      "label": "Kitchen",
+      "category": "kitchen"
+    }
+  },
+  "FF_Library_Power": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_Library",
+        "gPower"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Switch",
+        "Switchable"
+      ],
+      "label": "Power Outlet",
+      "category": "poweroutlet"
+    }
+  },
+  "FF_FamilyRoom_Motion": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "FF_FamilyRoom",
+        "gMotion"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "MotionDetector",
+        "Switchable"
+      ],
+      "label": "Motion Sensor",
+      "category": "motion"
+    }
+  },
+  "GF_LivingRoom_Light": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [
+        "GF_LivingRoom",
+        "gLight"
+      ],
+      "itemType": "Switch",
+      "tags": [
+        "Lighting",
+        "Switchable"
+      ],
+      "label": "Light",
+      "category": "light"
+    }
+  }
+}
