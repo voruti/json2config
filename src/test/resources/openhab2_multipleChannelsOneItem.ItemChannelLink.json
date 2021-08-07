@@ -1,0 +1,80 @@
+{
+  "MultiItem -\u003e mqtt:topic:52b61fd6:light": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "52b61fd6",
+          "light"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "MultiItem"
+    }
+  },
+  "MultiItem -\u003e mqtt:topic:d589b50d:power": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "d589b50d",
+          "power"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:follow"
+        }
+      },
+      "itemName": "MultiItem"
+    }
+  },
+  "MultiItem -\u003e mqtt:topic:3621578b:switch": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "3621578b",
+          "switch"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "sourceFormat": "%.1f °C",
+          "profile": "transform:REGEX",
+          "function": ".*\u003d(\\\\d*.\\\\d*).*"
+        }
+      },
+      "itemName": "MultiItem"
+    }
+  },
+  "MultiItem -\u003e mqtt:topic:1c4c5e84:light": {
+    "class": "org.eclipse.smarthome.core.thing.link.ItemChannelLink",
+    "value": {
+      "channelUID": {
+        "segments": [
+          "mqtt",
+          "topic",
+          "1c4c5e84",
+          "light"
+        ]
+      },
+      "configuration": {
+        "properties": {
+          "profile": "system:default"
+        }
+      },
+      "itemName": "MultiItem"
+    }
+  }
+}

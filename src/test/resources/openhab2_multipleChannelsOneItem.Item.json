@@ -1,0 +1,10 @@
+{
+  "MultiItem": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Switch",
+      "tags": []
+    }
+  }
+}
