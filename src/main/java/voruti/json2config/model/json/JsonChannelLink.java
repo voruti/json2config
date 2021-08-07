@@ -35,7 +35,9 @@ public class JsonChannelLink implements IConvertible {
 
             private static class Properties {
                 private String offset;
+                private String sourceFormat;
                 private String profile;
+                private String function;
             }
         }
     }
