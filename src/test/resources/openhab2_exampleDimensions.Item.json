@@ -1,0 +1,104 @@
+{
+  "Dim11": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Mass",
+      "tags": []
+    }
+  },
+  "Dim10": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Dimensionless",
+      "tags": []
+    }
+  },
+  "Dim1": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number",
+      "tags": []
+    }
+  },
+  "Dim2": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Temperature",
+      "tags": []
+    }
+  },
+  "Dim3": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Pressure",
+      "tags": []
+    }
+  },
+  "Dim4": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Speed",
+      "tags": []
+    }
+  },
+  "Dim5": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Length",
+      "tags": []
+    }
+  },
+  "Dim6": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Angle",
+      "tags": []
+    }
+  },
+  "Dim7": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Acceleration",
+      "tags": []
+    }
+  },
+  "Dim8": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:VolumetricFlowRate",
+      "tags": []
+    }
+  },
+  "Dim9": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "groupNames": [],
+      "itemType": "Number:Time",
+      "tags": []
+    }
+  },
+  "GroupTest": {
+    "class": "org.eclipse.smarthome.core.items.ManagedItemProvider$PersistedItem",
+    "value": {
+      "baseItemType": "Contact",
+      "groupNames": [],
+      "itemType": "Group",
+      "tags": [],
+      "functionName": "NAND",
+      "functionParams": [
+        "OPEN",
+        "CLOSED"
+      ]
+    }
+  }
+}

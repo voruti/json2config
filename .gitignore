@@ -340,8 +340,3 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 
 # End of https://www.toptal.com/developers/gitignore/api/git,java,maven,eclipse,windows,intellij+all,gradle,linux,sonarqube,visualstudiocode
-
-
-*.json
-*.items
-
