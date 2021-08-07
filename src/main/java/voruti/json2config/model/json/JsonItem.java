@@ -25,8 +25,12 @@ public class JsonItem implements IConvertible {
                 ? ""
                 : String.format("(%s)", String.join(",", value.functionParams));
         String beginString = value.itemType == null ? "" : value.itemType;
-        if (value.itemType != null && value.itemType.equalsIgnoreCase("Group")) {
-            beginString += baseItemTypeString + functionNameString + functionParamsString;
+        if (value.itemType != null) {
+            if (value.itemType.equalsIgnoreCase("Group")) {
+                beginString += baseItemTypeString + functionNameString + functionParamsString;
+            } else if (value.dimension != null && !value.itemType.contains(":")) {
+                beginString += value.dimension;
+            }
         }
 
         String labelString = value.label == null || value.label.isEmpty()
