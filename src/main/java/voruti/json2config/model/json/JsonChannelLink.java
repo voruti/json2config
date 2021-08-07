@@ -1,13 +1,12 @@
 package voruti.json2config.model.json;
 
 import lombok.Getter;
-import lombok.ToString;
 import voruti.json2config.model.IConvertible;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Getter
-@ToString
 public class JsonChannelLink implements IConvertible {
 
     private Value value;
@@ -20,23 +19,20 @@ public class JsonChannelLink implements IConvertible {
 
 
     @Getter
-    @ToString
     public static class Value {
         private ChannelUID channelUID;
         private Configuration configuration;
         private String itemName;
 
 
-        @ToString
         private static class ChannelUID {
             private List<String> segments;
         }
 
-        @ToString
         private static class Configuration {
             private Properties properties;
 
-            @ToString
+
             private static class Properties {
                 private String offset;
                 private String profile;

@@ -1,13 +1,11 @@
 package voruti.json2config.model.json;
 
-import lombok.ToString;
 import voruti.json2config.model.IConvertible;
 
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
-@ToString
 public class JsonItem implements IConvertible {
 
     private Value value;
@@ -60,7 +58,6 @@ public class JsonItem implements IConvertible {
     }
 
 
-    @ToString
     private static class Value {
         private String baseItemType;
         private List<String> groupNames;
