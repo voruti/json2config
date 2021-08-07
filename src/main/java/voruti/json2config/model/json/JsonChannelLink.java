@@ -14,7 +14,15 @@ public class JsonChannelLink implements IConvertible {
 
     @Override
     public String toConfigLine(String lineBefore) {
-        return String.format("%s {channel=\"%s\"}", lineBefore, String.join(":", value.channelUID.segments)).strip();
+        String format = "channel=\"%s\"}";
+        if (lineBefore.endsWith("}")) {
+            lineBefore = lineBefore.substring(0, lineBefore.length() - 1);
+            format = "%s, " + format;
+        } else {
+            format = "%s {" + format;
+        }
+
+        return String.format(format, lineBefore, String.join(":", value.channelUID.segments)).strip();
     }
 
 
@@ -35,7 +43,9 @@ public class JsonChannelLink implements IConvertible {
 
             private static class Properties {
                 private String offset;
+                private String sourceFormat;
                 private String profile;
+                private String function;
             }
         }
     }
