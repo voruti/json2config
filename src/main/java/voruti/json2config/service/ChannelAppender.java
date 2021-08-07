@@ -36,14 +36,15 @@ public class ChannelAppender {
             // open file:
             String content = SharedService.openFileToString(channelLinkFile);
             // map to list of channel links:
-            List<JsonChannelLink> channelsList = SharedService.jsonToConvertibleMap(content, Type.CHANNEL).values().stream()
+            List<JsonChannelLink> channelLinkList = SharedService.jsonToConvertibleMap(content, Type.CHANNEL).values().stream()
                     .map(JsonChannelLink.class::cast)
                     .collect(Collectors.toList());
-            log.info("Found {} channel links", channelsList.size());
-            log.trace("channelsList={}", channelsList);
+            log.info("Found {} channel links", channelLinkList.size());
+            log.trace("channelLinkList={}", channelLinkList);
 
             // search items files:
             List<String> itemsFiles = findItemsFilesInDir(directory);
+            // get names of all items:
             List<String> itemNamesList = itemsFiles.stream()
                     .map(ChannelAppender::getItemNamesFromFile)
                     .flatMap(Collection::stream)
@@ -51,25 +52,20 @@ public class ChannelAppender {
             log.info("Found {} items", itemNamesList.size());
             log.trace("itemNamesList={}", itemNamesList);
 
-            // only items present in both lists:
-            List<String> newItemNamesList = itemNamesList.stream().filter(n -> {
-                for (JsonChannelLink channel : channelsList) {
-                    if (channel.getValue().getItemName().equals(n)) {
-                        return true;
-                    }
-                }
-                return false;
-            }).collect(Collectors.toList());
-            List<JsonChannelLink> relevantChannelsList = channelsList.stream()
-                    .filter(c -> newItemNamesList.contains(c.getValue().getItemName())).collect(Collectors.toList());
-            log.info("{} match with each other", relevantChannelsList.size());
-            log.trace("relevantChannelsList={}", relevantChannelsList);
+            // only channels present in both lists:
+            List<JsonChannelLink> relevantChannelLinkList = channelLinkList.stream()
+                    .filter(channelLink -> itemNamesList.stream()
+                            .anyMatch(itemName -> itemName.equals(channelLink.getValue().getItemName())))
+                    .collect(Collectors.toList());
+            log.info("{} match with each other", relevantChannelLinkList.size());
+            log.trace("relevantChannelLinkList={}", relevantChannelLinkList);
 
             int count = 0;
-            for (JsonChannelLink channel : relevantChannelsList) {
+            for (JsonChannelLink channel : relevantChannelLinkList) {
                 for (String iFile : itemsFiles) {
-                    if (setChannelToItemInFile(channel, iFile))
+                    if (setChannelToItemInFile(channel, iFile)) {
                         count++;
+                    }
                 }
             }
             log.info("Successfully appended {} channel links!", count);
