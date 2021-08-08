@@ -44,9 +44,6 @@ directory. Alternatively you can adjust the program arguments to specify the fil
 - The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specify the directory in which to search
   for *.items files.
 
-:exclamation:Channel Link **Profiles** (value → configuration → properties → profile) currently will be lost in this
-process:exclamation: (They can - of course - manually be added afterwards)
-
 #### Other program features
 
 When enabling both features, the converting feature will run first, so the appending feature can then use the generated
