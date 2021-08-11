@@ -5,8 +5,6 @@ from [JsonDB Storage](https://www.openhab.org/docs/administration/jsondb.html) f
 org.eclipse.smarthome.core.items.Item.json, org.eclipse.smarthome.core.thing.link.ItemChannelLink.json) to textual
 configuration files (e.g. my.items).
 
-Tested on openHAB 2.X versions.
-
 ## Usage
 
 You can run the tool with Java:
