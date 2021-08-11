@@ -48,3 +48,6 @@ directory. Alternatively you can adjust the program arguments to specify the fil
 
 When enabling both features, the converting feature will run first, so the appending feature can then use the generated
 .items file to append the channel links.
+
+With the `-3`/`--v3`/`--openhab3` parameters default values used since openHAB version 3.X are set. Additional
+parameters that specify a custom file always have priority over these defaults.

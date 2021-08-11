@@ -4,6 +4,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import voruti.json2config.service.ChannelAppender;
+import voruti.json2config.service.Constants;
 import voruti.json2config.service.Converter;
 import voruti.json2config.service.Type;
 
@@ -22,14 +23,18 @@ public class Starter implements Runnable {
             description = "enable the appending feature")
     private boolean doChannelLinks;
 
+    @Option(names = {"-3", "--openhab3", "--v3", "--openhab-v3", "--openhabv3", "--openhab-3"},
+            description = "set default file names used since openHAB version 3.X")
+    private boolean defaultV3;
+
 
     @Option(names = {"-i", "--in", "--json"},
-            defaultValue = "org.eclipse.smarthome.core.items.Item.json",
+            defaultValue = Constants.DEFAULT_V2_JSON_FILE,
             description = "specify the input .json file")
     private String jsonFile;
 
     @Option(names = {"--channel-file", "--channel-link-file"},
-            defaultValue = "org.eclipse.smarthome.core.thing.link.ItemChannelLink.json",
+            defaultValue = Constants.DEFAULT_V2_CHANNEL_FILE,
             description = "specify the .json file location containing the channel links")
     private String channelFile;
 
@@ -54,6 +59,16 @@ public class Starter implements Runnable {
      */
     @Override
     public void run() {
+        // openHAB 3.X defaults:
+        if (defaultV3) {
+            if (jsonFile.equals(Constants.DEFAULT_V2_JSON_FILE)) {
+                jsonFile = Constants.DEFAULT_V3_JSON_FILE;
+            }
+            if (channelFile.equals(Constants.DEFAULT_V2_CHANNEL_FILE)) {
+                channelFile = Constants.DEFAULT_V3_CHANNEL_FILE;
+            }
+        }
+
         // start Converter:
         if (!noConverter) {
             Converter.start(jsonFile, outFile, Type.ITEM);
