@@ -11,7 +11,7 @@ import voruti.json2config.service.Type;
 /**
  * @author voruti
  */
-@Command(name = "java -jar json2config.jar", mixinStandardHelpOptions = true, version = "1.6.0",
+@Command(name = "java -jar json2config.jar", mixinStandardHelpOptions = true, version = "1.7.0",
         description = "Converts openHAB Items from JsonDB Storage files.")
 public class Starter implements Runnable {
 
