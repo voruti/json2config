@@ -45,7 +45,7 @@ public class JsonItem implements IConvertible {
 
         String tagsString = value.tags == null || value.tags.isEmpty()
                 ? ""
-                : String.format("[%s]", String.join(", ", value.tags));
+                : String.format("[\"%s\"]", String.join("\", \"", value.tags));
 
         return new StringJoiner(" ")
                 .add(beginString)

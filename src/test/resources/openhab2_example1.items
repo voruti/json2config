@@ -1,36 +1,36 @@
-Contact                        GF_Bathroom_Window                       "Window"             <window>             (GF_Bathroom, gWindow) [Window]                {channel="mqtt:topic:4118d16f:window"}
+Contact                        GF_Bathroom_Window                       "Window"             <window>             (GF_Bathroom, gWindow) ["Window"]                {channel="mqtt:topic:4118d16f:window"}
 
-Group                          FF                                       "First Floor"        <firstfloor>         (Home)               [FirstFloor]
-Group                          FF_Corridor                              "Corridor"           <corridor>           (Home, FF)           [Corridor]
-Group                          FF_FamilyRoom                            "Family Room"        <parents_2_4>        (Home, FF)           [Room]
-Group                          FF_GuestRoom                             "Guest Room"         <parents_4_3>        (Home, FF)           [Room]
-Group                          FF_KidsRoom                              "Kids Room"          <girl_3>             (Home, FF)           [Room]
-Group                          FF_Library                               "Library"            <office>             (Home, FF)           [Room]
-Group                          FF_Toilet                                "Toilet"             <toilet>             (Home, FF)           [Bathroom]
-Group                          GF                                       "Ground Floor"       <groundfloor>        (Home)               [GroundFloor]
-Group                          GF_Bathroom                              "Bathroom"           <bath>               (Home, GF)           [Bathroom]
-Group                          GF_Bedroom                               "Bedroom"            <bedroom>            (Home, GF)           [Bedroom]
-Group                          GF_Corridor                              "Corridor"           <corridor>           (Home, GF)           [Corridor]
-Group                          GF_Kitchen                               "Kitchen"            <kitchen>            (Home, GF)           [Kitchen]
-Group                          GF_LivingRoom                            "Living Room"        <sofa>               (Home, GF)           [LivingRoom]
-Group                          Home                                     "Our Home"           <house>                                   [Building]
-Group:Contact:OR(OPEN,CLOSED)  gWindow                                  "Window"             <window>             (Home)               [Window]
-Group:Switch:OR(ON,OFF)        gLight                                   "Light"              <light>              (Home)               [Lighting, Switchable]
-Group:Switch:OR(ON,OFF)        gMotion                                  "Motion Sensor"      <motion>             (Home)               [MotionDetector, Switchable]
-Group:Switch:OR(ON,OFF)        gPower                                   "Power Outlet"       <poweroutlet>        (Home)               [Switch, Switchable]
+Group                          FF                                       "First Floor"        <firstfloor>         (Home)               ["FirstFloor"]
+Group                          FF_Corridor                              "Corridor"           <corridor>           (Home, FF)           ["Corridor"]
+Group                          FF_FamilyRoom                            "Family Room"        <parents_2_4>        (Home, FF)           ["Room"]
+Group                          FF_GuestRoom                             "Guest Room"         <parents_4_3>        (Home, FF)           ["Room"]
+Group                          FF_KidsRoom                              "Kids Room"          <girl_3>             (Home, FF)           ["Room"]
+Group                          FF_Library                               "Library"            <office>             (Home, FF)           ["Room"]
+Group                          FF_Toilet                                "Toilet"             <toilet>             (Home, FF)           ["Bathroom"]
+Group                          GF                                       "Ground Floor"       <groundfloor>        (Home)               ["GroundFloor"]
+Group                          GF_Bathroom                              "Bathroom"           <bath>               (Home, GF)           ["Bathroom"]
+Group                          GF_Bedroom                               "Bedroom"            <bedroom>            (Home, GF)           ["Bedroom"]
+Group                          GF_Corridor                              "Corridor"           <corridor>           (Home, GF)           ["Corridor"]
+Group                          GF_Kitchen                               "Kitchen"            <kitchen>            (Home, GF)           ["Kitchen"]
+Group                          GF_LivingRoom                            "Living Room"        <sofa>               (Home, GF)           ["LivingRoom"]
+Group                          Home                                     "Our Home"           <house>                                   ["Building"]
+Group:Contact:OR(OPEN,CLOSED)  gWindow                                  "Window"             <window>             (Home)               ["Window"]
+Group:Switch:OR(ON,OFF)        gLight                                   "Light"              <light>              (Home)               ["Lighting", "Switchable"]
+Group:Switch:OR(ON,OFF)        gMotion                                  "Motion Sensor"      <motion>             (Home)               ["MotionDetector", "Switchable"]
+Group:Switch:OR(ON,OFF)        gPower                                   "Power Outlet"       <poweroutlet>        (Home)               ["Switch", "Switchable"]
 
-Switch                         FF_Corridor_Light                        "Light"              <light>              (FF_Corridor, gLight) [Lighting, Switchable]
-Switch                         FF_FamilyRoom_Light                      "Light"              <light>              (FF_FamilyRoom, gLight) [Lighting, Switchable]
-Switch                         FF_FamilyRoom_Motion                     "Motion Sensor"      <motion>             (FF_FamilyRoom, gMotion) [MotionDetector, Switchable] {channel="mqtt:topic:3621578b:switch"}
-Switch                         FF_GuestRoom_Light                       "Light"              <light>              (FF_GuestRoom, gLight) [Lighting, Switchable]
-Switch                         FF_KidsRoom_Light                        "Light"              <light>              (FF_KidsRoom, gLight) [Lighting, Switchable]
-Switch                         FF_KidsRoom_Power                        "Power Outlet"       <poweroutlet>        (FF_KidsRoom, gPower) [Switch, Switchable]     {channel="mqtt:topic:d589b50d:power"}
-Switch                         FF_Library_Light                         "Light"              <light>              (FF_Library, gLight) [Lighting, Switchable]    {channel="mqtt:topic:1c4c5e84:light"}
-Switch                         FF_Library_Power                         "Power Outlet"       <poweroutlet>        (FF_Library, gPower) [Switch, Switchable]
-Switch                         FF_Toilet_Light                          "Light"              <light>              (FF_Toilet, gLight)  [Lighting, Switchable]    {channel="mqtt:topic:52b61fd6:light"}
-Switch                         GF_Bathroom_Light                        "Light"              <light>              (GF_Bathroom, gLight) [Lighting, Switchable]
-Switch                         GF_Bedroom_Light                         "Light"              <light>              (GF_Bedroom, gLight) [Lighting, Switchable]
-Switch                         GF_Corridor_Light                        "Light"              <light>              (GF_Corridor, gLight) [Lighting, Switchable]
-Switch                         GF_Kitchen_Light                         "Light"              <light>              (GF_Kitchen, gLight) [Lighting, Switchable]    {channel="mqtt:topic:40d4c19b:light"}
-Switch                         GF_LivingRoom_Light                      "Light"              <light>              (GF_LivingRoom, gLight) [Lighting, Switchable]
-Switch                         GF_LivingRoom_Power                      "Power Outlet"       <poweroutlet>        (GF_LivingRoom, gPower) [Switch, Switchable]
+Switch                         FF_Corridor_Light                        "Light"              <light>              (FF_Corridor, gLight) ["Lighting", "Switchable"]
+Switch                         FF_FamilyRoom_Light                      "Light"              <light>              (FF_FamilyRoom, gLight) ["Lighting", "Switchable"]
+Switch                         FF_FamilyRoom_Motion                     "Motion Sensor"      <motion>             (FF_FamilyRoom, gMotion) ["MotionDetector", "Switchable"] {channel="mqtt:topic:3621578b:switch"}
+Switch                         FF_GuestRoom_Light                       "Light"              <light>              (FF_GuestRoom, gLight) ["Lighting", "Switchable"]
+Switch                         FF_KidsRoom_Light                        "Light"              <light>              (FF_KidsRoom, gLight) ["Lighting", "Switchable"]
+Switch                         FF_KidsRoom_Power                        "Power Outlet"       <poweroutlet>        (FF_KidsRoom, gPower) ["Switch", "Switchable"]     {channel="mqtt:topic:d589b50d:power"}
+Switch                         FF_Library_Light                         "Light"              <light>              (FF_Library, gLight) ["Lighting", "Switchable"]    {channel="mqtt:topic:1c4c5e84:light"}
+Switch                         FF_Library_Power                         "Power Outlet"       <poweroutlet>        (FF_Library, gPower) ["Switch", "Switchable"]
+Switch                         FF_Toilet_Light                          "Light"              <light>              (FF_Toilet, gLight)  ["Lighting", "Switchable"]    {channel="mqtt:topic:52b61fd6:light"}
+Switch                         GF_Bathroom_Light                        "Light"              <light>              (GF_Bathroom, gLight) ["Lighting", "Switchable"]
+Switch                         GF_Bedroom_Light                         "Light"              <light>              (GF_Bedroom, gLight) ["Lighting", "Switchable"]
+Switch                         GF_Corridor_Light                        "Light"              <light>              (GF_Corridor, gLight) ["Lighting", "Switchable"]
+Switch                         GF_Kitchen_Light                         "Light"              <light>              (GF_Kitchen, gLight) ["Lighting", "Switchable"]    {channel="mqtt:topic:40d4c19b:light"}
+Switch                         GF_LivingRoom_Light                      "Light"              <light>              (GF_LivingRoom, gLight) ["Lighting", "Switchable"]
+Switch                         GF_LivingRoom_Power                      "Power Outlet"       <poweroutlet>        (GF_LivingRoom, gPower) ["Switch", "Switchable"]
