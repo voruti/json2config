@@ -36,8 +36,10 @@ class IntegrationTest {
         Starter.main(new String[]{"-i", RESOURCES + testName + ".Item.json",
                 "-o", generatedItemsFile,
                 "-c",
+                "-m",
                 "-d", TEMPORARY,
-                "--channel-file", RESOURCES + testName + ".ItemChannelLink.json"});
+                "--channel-file", RESOURCES + testName + ".ItemChannelLink.json",
+                "--metadata-file", RESOURCES + testName + ".Metadata.json"});
 
         // assert:
         // load generated .items file:

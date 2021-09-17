@@ -30,7 +30,7 @@ Switch                         FF_Library_Power                         "Power O
 Switch                         FF_Toilet_Light                          "Light"              <light>              (FF_Toilet, gLight)  ["Lighting", "Switchable"]    {channel="mqtt:topic:52b61fd6:light"}
 Switch                         GF_Bathroom_Light                        "Light"              <light>              (GF_Bathroom, gLight) ["Lighting", "Switchable"]
 Switch                         GF_Bedroom_Light                         "Light"              <light>              (GF_Bedroom, gLight) ["Lighting", "Switchable"]
-Switch                         GF_Corridor_Light                        "Light"              <light>              (GF_Corridor, gLight) ["Lighting", "Switchable"]
-Switch                         GF_Kitchen_Light                         "Light"              <light>              (GF_Kitchen, gLight) ["Lighting", "Switchable"]    {channel="mqtt:topic:40d4c19b:light"}
+Switch                         GF_Corridor_Light                        "Light"              <light>              (GF_Corridor, gLight) ["Lighting", "Switchable"]   {ga="Light"}
+Switch                         GF_Kitchen_Light                         "Light"              <light>              (GF_Kitchen, gLight) ["Lighting", "Switchable"]    {channel="mqtt:topic:40d4c19b:light", ga="Light"}
 Switch                         GF_LivingRoom_Light                      "Light"              <light>              (GF_LivingRoom, gLight) ["Lighting", "Switchable"]
 Switch                         GF_LivingRoom_Power                      "Power Outlet"       <poweroutlet>        (GF_LivingRoom, gPower) ["Switch", "Switchable"]

@@ -1,0 +1,41 @@
+{
+  "ga:GF_Corridor": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "ga",
+          "GF_Corridor"
+        ]
+      },
+      "value": "Light",
+      "configuration": {}
+    }
+  },
+  "ga:GF_Corridor_Light": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "ga",
+          "GF_Corridor_Light"
+        ]
+      },
+      "value": "Light",
+      "configuration": {}
+    }
+  },
+  "ga:GF_Kitchen_Light": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "ga",
+          "GF_Kitchen_Light"
+        ]
+      },
+      "value": "Light",
+      "configuration": {}
+    }
+  }
+}

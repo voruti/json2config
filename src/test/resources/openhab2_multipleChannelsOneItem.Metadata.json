@@ -1,0 +1,28 @@
+{
+  "ga:MultiItem": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "ga",
+          "MultiItem"
+        ]
+      },
+      "value": "Switch",
+      "configuration": {}
+    }
+  },
+  "ga:GF_Kitchen_Light": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "ga",
+          "GF_Kitchen_Light"
+        ]
+      },
+      "value": "Light",
+      "configuration": {}
+    }
+  }
+}
