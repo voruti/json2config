@@ -48,18 +48,18 @@ public class MetadataAppender {
             log.info("Found {} items", itemNamesList.size());
             log.trace("itemNamesList={}", itemNamesList);
 
-            // only channels present in both lists:
+            // only metadata present in both lists:
             List<JsonMetadata> relevantMetadataList = metadataList.stream()
                     .filter(metadata -> itemNamesList.stream()
                             .anyMatch(itemName -> itemName.equals(metadata.getItemName())))
                     .collect(Collectors.toList());
             log.info("{} match with each other", relevantMetadataList.size());
-            log.trace("relevantChannelLinkList={}", relevantMetadataList);
+            log.trace("relevantMetadataList={}", relevantMetadataList);
 
             int count = 0;
-            for (JsonMetadata channel : relevantMetadataList) {
+            for (JsonMetadata metadata : relevantMetadataList) {
                 for (String iFile : itemsFiles) {
-                    if (Appender.appendToItemInFile(channel, iFile)) {
+                    if (Appender.appendToItemInFile(metadata, iFile)) {
                         count++;
                     }
                 }
