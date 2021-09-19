@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
-import voruti.json2config.model.json.JsonChannelLink;
 import voruti.json2config.model.json.JsonMetadata;
 
 /**

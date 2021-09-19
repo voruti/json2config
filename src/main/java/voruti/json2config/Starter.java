@@ -77,6 +77,9 @@ public class Starter implements Runnable {
             if (channelFile.equals(Constants.DEFAULT_V2_CHANNEL_FILE)) {
                 channelFile = Constants.DEFAULT_V3_CHANNEL_FILE;
             }
+            if (metadataFile.equals(Constants.DEFAULT_V2_METADATA_FILE)) {
+            	metadataFile = Constants.DEFAULT_V3_METADATA_FILE;
+            }
         }
 
         // start Converter:

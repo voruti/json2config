@@ -1,15 +1,12 @@
 package voruti.json2config.service;
 
-import lombok.extern.slf4j.Slf4j;
-import voruti.json2config.model.json.JsonChannelLink;
-
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
+import voruti.json2config.model.json.JsonChannelLink;
 
 /**
  * @author voruti

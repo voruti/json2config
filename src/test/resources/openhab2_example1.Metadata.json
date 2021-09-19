@@ -12,26 +12,52 @@
       "configuration": {}
     }
   },
-  "ga:GF_Corridor_Light": {
+  "ga:FF_FamilyRoom_Motion": {
     "class": "org.eclipse.smarthome.core.items.Metadata",
     "value": {
       "key": {
         "segments": [
           "ga",
-          "GF_Corridor_Light"
+          "FF_FamilyRoom_Motion"
         ]
       },
-      "value": "Light",
+      "value": "Sensor",
       "configuration": {}
     }
   },
-  "ga:GF_Kitchen_Light": {
+  "ga:GF_LivingRoom_Power": {
     "class": "org.eclipse.smarthome.core.items.Metadata",
     "value": {
       "key": {
         "segments": [
           "ga",
-          "GF_Kitchen_Light"
+          "GF_LivingRoom_Power"
+        ]
+      },
+      "value": "Outlet",
+      "configuration": {}
+    }
+  },
+  "alexa:GF_Bedroom_Light": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "alexa",
+          "GF_Bedroom_Light"
+        ]
+      },
+      "value": "Lighting",
+      "configuration": {}
+    }
+  },
+  "ga:GF_Bedroom_Light": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "ga",
+          "GF_Bedroom_Light"
         ]
       },
       "value": "Light",

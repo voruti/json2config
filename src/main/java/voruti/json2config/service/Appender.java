@@ -26,7 +26,7 @@ public class Appender {
     public static List<String> getItemNamesFromFile(String fileName) {
         try {
             return Arrays.stream(SharedService.openFileToString(fileName).split("\n"))
-                    .filter(line -> !line.isEmpty() && !line.toLowerCase().startsWith("group"))
+                    .filter(line -> !line.isEmpty())
                     .map(Appender::searchNameInLine)
                     .filter(itemName -> !itemName.isEmpty())
                     .collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class Appender {
             List<String> originalLines = Arrays.asList(SharedService.openFileToString(fileName).split("\n"));
             List<String> modifiedLines = originalLines.stream()
                     .map(line -> {
-                        if (!line.isEmpty() && !line.toLowerCase().startsWith("group")) {
+                        if (!line.isEmpty()) {
                             String readItemName = searchNameInLine(line);
                             if (!readItemName.isEmpty() && readItemName.equals(appendable.getItemName())) {
                                 return appendable.toConfigLine(line);

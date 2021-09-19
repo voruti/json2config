@@ -2,8 +2,6 @@ package voruti.json2config.model.json;
 
 import java.util.List;
 
-import com.google.gson.Gson;
-
 import lombok.Getter;
 import voruti.json2config.model.IAppendable;
 
