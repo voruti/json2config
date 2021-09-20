@@ -57,7 +57,8 @@ directory. Alternatively you can adjust the program arguments to specify the fil
 - The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specify the directory in which to search
   for *.items files.
   
-**IMPORTANT NOTE:** Metadata properties are not currently supported.
+**IMPORTANT NOTE:** Metadata attributes, found in item files as `[ roomHint="Living Room" ]` and in the
+metadata json under the `configuration` key are not currently supported and will be ignored.
 
 #### Other program features
 
