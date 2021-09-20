@@ -3,6 +3,7 @@ package voruti.json2config.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -10,10 +11,55 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import voruti.json2config.model.IAppendable;
 
+/**
+ * Common code for appending channel links and metadata to items
+ * 
+ * @author sbholmes
+ *
+ */
 @Slf4j
 public class Appender {
 	
 	private Appender() {
+	}
+	
+	/**
+	 * Appends data found in {@code appendableList} onto the end of items in the {@code directory}
+	 * 
+	 * @param directory			the directory in which to search for ".items" files
+	 * @param appendableList    the list of data that needs appending to items
+	 */
+	public static void searchAndAppend(String directory, List<IAppendable> appendableList) {
+        // search items files:
+        List<String> itemsFiles = Appender.findItemsFilesInDir(directory);
+        // get names of all items:
+        List<String> itemNamesList = itemsFiles.stream()
+                .map(Appender::getItemNamesFromFile)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        log.info("Found {} items", itemNamesList.size());
+        log.trace("itemNamesList={}", itemNamesList);
+
+        // only data present in both lists:
+        List<IAppendable> relevantDataList = appendableList.stream()
+                .filter(data -> itemNamesList.stream()
+                        .anyMatch(itemName -> itemName.equals(data.getItemName())))
+                .collect(Collectors.toList());
+        log.info("{} match with each other", relevantDataList.size());
+        log.trace("relevantDataList={}", relevantDataList);
+
+        // append the right data to the right item
+        int count = 0;
+        for (IAppendable appendable : relevantDataList) {
+            for (String iFile : itemsFiles) {
+                if (Appender.appendToItemInFile(appendable, iFile)) {
+                    count++;
+                }
+            }
+        }
+        log.info("Successfully appended {} channels/metadata!", count);
+
+        log.warn("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
 	}
 	
     /**

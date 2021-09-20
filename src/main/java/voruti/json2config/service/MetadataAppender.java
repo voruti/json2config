@@ -1,11 +1,11 @@
 package voruti.json2config.service;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
+import voruti.json2config.model.IAppendable;
 import voruti.json2config.model.json.JsonMetadata;
 
 /**
@@ -32,39 +32,13 @@ public class MetadataAppender {
             // open file:
             String content = SharedService.openFileToString(metadataFile);
             // map to list of metadata:
-            List<JsonMetadata> metadataList = SharedService.jsonToConvertibleMap(content, Type.METADATA).values().stream()
+            List<IAppendable> metadataList = SharedService.jsonToConvertibleMap(content, Type.METADATA).values().stream()
                     .map(JsonMetadata.class::cast)
                     .collect(Collectors.toList());
             log.info("Found {} metadata", metadataList.size());
             log.trace("metadataList={}", metadataList);
 
-            // search items files:
-            List<String> itemsFiles = Appender.findItemsFilesInDir(directory);
-            // get names of all items:
-            List<String> itemNamesList = itemsFiles.stream()
-                    .map(Appender::getItemNamesFromFile)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-            log.info("Found {} items", itemNamesList.size());
-            log.trace("itemNamesList={}", itemNamesList);
-
-            // only metadata present in both lists:
-            List<JsonMetadata> relevantMetadataList = metadataList.stream()
-                    .filter(metadata -> itemNamesList.stream()
-                            .anyMatch(itemName -> itemName.equals(metadata.getItemName())))
-                    .collect(Collectors.toList());
-            log.info("{} match with each other", relevantMetadataList.size());
-            log.trace("relevantMetadataList={}", relevantMetadataList);
-
-            int count = 0;
-            for (JsonMetadata metadata : relevantMetadataList) {
-                for (String iFile : itemsFiles) {
-                    if (Appender.appendToItemInFile(metadata, iFile)) {
-                        count++;
-                    }
-                }
-            }
-            log.info("Successfully appended {} metadata!", count);
+            Appender.searchAndAppend(directory, metadataList);
 
         } catch (IOException e) {
             log.error(Constants.LOG_CANT_OPEN_FILE, metadataFile);
