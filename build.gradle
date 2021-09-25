@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'voruti'
-version = '1.7.1' // change me on new release
+version = '1.8.0' // change me on new release
 description = 'json2config'
 
 repositories {
