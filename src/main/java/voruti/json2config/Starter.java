@@ -23,7 +23,7 @@ public class Starter implements Runnable {
     @Option(names = {"-c", "--channel", "--channel-link", "--create-channels", "--create-channel-links"},
             description = "enable the appending feature")
     private boolean doChannelLinks;
-    
+
     @Option(names = {"-m", "--metadata", "--append-metadata"},
             description = "enable the metadata appending feature")
     private boolean doMetadata;
@@ -47,7 +47,7 @@ public class Starter implements Runnable {
             defaultValue = Constants.DEFAULT_V2_METADATA_FILE,
             description = "specify the .json file location containing the metadata")
     private String metadataFile;
-    
+
     @Option(names = {"-o", "--out", "--items"},
             defaultValue = "json.items",
             description = "specify the output file")
@@ -78,7 +78,7 @@ public class Starter implements Runnable {
                 channelFile = Constants.DEFAULT_V3_CHANNEL_FILE;
             }
             if (metadataFile.equals(Constants.DEFAULT_V2_METADATA_FILE)) {
-            	metadataFile = Constants.DEFAULT_V3_METADATA_FILE;
+                metadataFile = Constants.DEFAULT_V3_METADATA_FILE;
             }
         }
 
@@ -91,7 +91,7 @@ public class Starter implements Runnable {
         if (doChannelLinks) {
             ChannelAppender.start(channelFile, directory);
         }
-        
+
         // start MetadataAppender:
         if (doMetadata) {
             MetadataAppender.start(metadataFile, directory);

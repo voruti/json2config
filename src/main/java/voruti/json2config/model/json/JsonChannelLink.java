@@ -1,13 +1,12 @@
 package voruti.json2config.model.json;
 
+import com.google.gson.Gson;
+import lombok.Getter;
+import voruti.json2config.model.IAppendable;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.google.gson.Gson;
-
-import lombok.Getter;
-import voruti.json2config.model.IAppendable;
 
 @Getter
 public class JsonChannelLink implements IAppendable {
@@ -43,6 +42,10 @@ public class JsonChannelLink implements IAppendable {
         return String.format(format, lineBefore, String.join(":", value.channelUID.segments), propertiesString).strip();
     }
 
+    @Override
+    public String getItemName() {
+        return value.itemName;
+    }
 
     @Getter
     public static class Value {
@@ -59,9 +62,4 @@ public class JsonChannelLink implements IAppendable {
             private Map<String, String> properties;
         }
     }
-
-	@Override
-	public String getItemName() {
-		return value.itemName;
-	}
 }

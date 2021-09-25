@@ -1,5 +1,13 @@
 package voruti.json2config.service;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
+import voruti.json2config.model.IConvertible;
+import voruti.json2config.model.json.JsonChannelLink;
+import voruti.json2config.model.json.JsonItem;
+import voruti.json2config.model.json.JsonMetadata;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -7,15 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import lombok.extern.slf4j.Slf4j;
-import voruti.json2config.model.IConvertible;
-import voruti.json2config.model.json.JsonChannelLink;
-import voruti.json2config.model.json.JsonItem;
-import voruti.json2config.model.json.JsonMetadata;
 
 @Slf4j
 public final class SharedService {
@@ -63,9 +62,10 @@ public final class SharedService {
                 }.getType();
                 break;
             case METADATA:
+                //noinspection DuplicateBranchesInSwitch
                 mapType = new TypeToken<Map<String, JsonMetadata>>() {
                 }.getType();
-                break; 
+                break;
         }
 
         return GSON.fromJson(json, mapType);

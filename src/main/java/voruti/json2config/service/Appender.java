@@ -1,5 +1,8 @@
 package voruti.json2config.service;
 
+import lombok.extern.slf4j.Slf4j;
+import voruti.json2config.model.IAppendable;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,28 +11,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
-import voruti.json2config.model.IAppendable;
-
 /**
  * Common code for appending channel links and metadata to items
- * 
- * @author sbholmes
  *
+ * @author sbholmes
  */
 @Slf4j
 public class Appender {
-	
-	private Appender() {
-	}
-	
-	/**
-	 * Appends data found in {@code appendableList} onto the end of items in the {@code directory}
-	 * 
-	 * @param directory			the directory in which to search for ".items" files
-	 * @param appendableList    the list of data that needs appending to items
-	 */
-	public static void searchAndAppend(String directory, List<IAppendable> appendableList) {
+
+    private Appender() {
+    }
+    
+
+    /**
+     * Appends data found in {@code appendableList} onto the end of items in the {@code directory}
+     *
+     * @param directory      the directory in which to search for ".items" files
+     * @param appendableList the list of data that needs appending to items
+     */
+    public static void searchAndAppend(String directory, List<IAppendable> appendableList) {
         // search items files:
         List<String> itemsFiles = Appender.findItemsFilesInDir(directory);
         // get names of all items:
@@ -60,8 +60,8 @@ public class Appender {
         log.info("Successfully appended {} channels/metadata!", count);
 
         log.warn("Warning: You might need to manually fix some converting mistakes (double channels, etc.)");
-	}
-	
+    }
+
     /**
      * Returns a {@link List} of Strings containing the names of all items in
      * {@code fileName}.
@@ -87,7 +87,7 @@ public class Appender {
      * Appends the {@code appendable} after the item in {@code fileName}.
      *
      * @param appendable the data to append after the item
-     * @param fileName    the file to search for the item
+     * @param fileName   the file to search for the item
      * @return {@code true} if the {@code appendable} could be appended, {@code false} otherwise
      */
     public static boolean appendToItemInFile(IAppendable appendable, String fileName) {

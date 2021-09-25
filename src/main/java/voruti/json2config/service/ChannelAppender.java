@@ -1,12 +1,12 @@
 package voruti.json2config.service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import lombok.extern.slf4j.Slf4j;
 import voruti.json2config.model.IAppendable;
 import voruti.json2config.model.json.JsonChannelLink;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author voruti
@@ -16,6 +16,7 @@ public class ChannelAppender {
 
     private ChannelAppender() {
     }
+
 
     /**
      * Appends the channel links from {@code channelLinkFile} to all ".items" files
@@ -38,10 +39,8 @@ public class ChannelAppender {
             log.trace("channelLinkList={}", channelLinkList);
 
             Appender.searchAndAppend(directory, channelLinkList);
-
         } catch (IOException e) {
             log.error(Constants.LOG_CANT_OPEN_FILE, channelLinkFile);
         }
     }
-
 }

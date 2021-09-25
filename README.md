@@ -44,21 +44,20 @@ directory. Alternatively you can adjust the program arguments to specify the fil
 
 ### 3. Appending metadata from org.eclipse.smarthome.core.items.Metadata.json to *.items files
 
-To append metadata to *already existing* .items files, you can use the third feature. If you already have
-some `*.items` files in your configuration, it's recommended to also including these files i.e. moving them into the
-same directory. By default, (when the appending feature is enabled!!) the tool will use metadata from
-the `org.eclipse.smarthome.core.items.Metadata.json` file and append them to all `*.items` files in the same
-directory. Alternatively you can adjust the program arguments to specify the file locations:
+To append metadata to *already existing* .items files, you can use the third feature. If you already have some `*.items`
+files in your configuration, it's recommended to also including these files i.e. moving them into the same directory. By
+default, (when the appending feature is enabled!!) the tool will use metadata from
+the `org.eclipse.smarthome.core.items.Metadata.json` file and append them to all `*.items` files in the same directory.
+Alternatively you can adjust the program arguments to specify the file locations:
 
 - The `-m`/`--metadata`/`--append-metadata` parameters enable the appending metadata feature. Without one of these, this
   feature won't run!
-- The `--metadata-file <path>` parameter allows you to specify the .json file location
-  containing the metadata.
+- The `--metadata-file <path>` parameter allows you to specify the .json file location containing the metadata.
 - The `-d <path>`/`--dir <path>`/`--directory <path>` parameters allow you to specify the directory in which to search
   for *.items files.
-  
-**IMPORTANT NOTE:** Metadata attributes, found in item files as `[ roomHint="Living Room" ]` and in the
-metadata json under the `configuration` key are not currently supported and will be ignored.
+
+**IMPORTANT NOTE:** Metadata attributes, found in item files as `[ roomHint="Living Room" ]` and in the metadata json
+under the `configuration` key are not currently supported and will be ignored.
 
 #### Other program features
 
