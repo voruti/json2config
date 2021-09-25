@@ -1,5 +1,5 @@
 package voruti.json2config.service;
 
 public enum Type {
-    ITEM, THING, CHANNEL
+    ITEM, THING, CHANNEL, METADATA
 }

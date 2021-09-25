@@ -10,6 +10,8 @@ public final class Constants {
     public static final String DEFAULT_V3_JSON_FILE = "org.openhab.core.items.Item.json";
     public static final String DEFAULT_V2_CHANNEL_FILE = "org.eclipse.smarthome.core.thing.link.ItemChannelLink.json";
     public static final String DEFAULT_V3_CHANNEL_FILE = "org.openhab.core.thing.link.ItemChannelLink.json";
+    public static final String DEFAULT_V2_METADATA_FILE = "org.eclipse.smarthome.core.items.Metadata.json";
+    public static final String DEFAULT_V3_METADATA_FILE = "org.openhab.core.items.Metadata.json";
 
 
     private Constants() {

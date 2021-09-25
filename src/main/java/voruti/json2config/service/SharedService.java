@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import voruti.json2config.model.IConvertible;
 import voruti.json2config.model.json.JsonChannelLink;
 import voruti.json2config.model.json.JsonItem;
+import voruti.json2config.model.json.JsonMetadata;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -58,6 +59,11 @@ public final class SharedService {
             case CHANNEL:
                 //noinspection DuplicateBranchesInSwitch
                 mapType = new TypeToken<Map<String, JsonChannelLink>>() {
+                }.getType();
+                break;
+            case METADATA:
+                //noinspection DuplicateBranchesInSwitch
+                mapType = new TypeToken<Map<String, JsonMetadata>>() {
                 }.getType();
                 break;
         }

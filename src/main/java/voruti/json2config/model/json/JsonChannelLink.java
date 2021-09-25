@@ -2,14 +2,14 @@ package voruti.json2config.model.json;
 
 import com.google.gson.Gson;
 import lombok.Getter;
-import voruti.json2config.model.IConvertible;
+import voruti.json2config.model.IAppendable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
-public class JsonChannelLink implements IConvertible {
+public class JsonChannelLink implements IAppendable {
 
     private static final Gson GSON = new Gson();
     private Value value;
@@ -42,6 +42,10 @@ public class JsonChannelLink implements IConvertible {
         return String.format(format, lineBefore, String.join(":", value.channelUID.segments), propertiesString).strip();
     }
 
+    @Override
+    public String getItemName() {
+        return value.itemName;
+    }
 
     @Getter
     public static class Value {

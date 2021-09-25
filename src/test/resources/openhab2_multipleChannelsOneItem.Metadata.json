@@ -1,0 +1,15 @@
+{
+  "ga:MultiItem": {
+    "class": "org.eclipse.smarthome.core.items.Metadata",
+    "value": {
+      "key": {
+        "segments": [
+          "ga",
+          "MultiItem"
+        ]
+      },
+      "value": "Switch",
+      "configuration": {}
+    }
+  }
+}
