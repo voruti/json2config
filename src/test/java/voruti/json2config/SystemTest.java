@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class IntegrationTest {
+class SystemTest {
 
     private static final String RESOURCES = "build/resources/test/";
     private static final String TEMPORARY = "build/tmp/test/";
