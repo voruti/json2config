@@ -30,7 +30,7 @@ dependencies {
     annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
 
     // Gson:
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     // JUnit 5:
     testImplementation(platform('org.junit:junit-bom:5.7.2'))
