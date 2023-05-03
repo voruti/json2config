@@ -17,7 +17,7 @@ dependencies {
     // SLF4J as a facade over Log4j2 required dependencies
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.17.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.20.0'
 
     // Lombok:
     compileOnly 'org.projectlombok:lombok:1.18.20'
