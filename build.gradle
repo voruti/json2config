@@ -26,8 +26,9 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     // picocli:
-    implementation 'info.picocli:picocli:4.7.3'
-    annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
+    def picocli_version = "4.7.3"
+    implementation 'info.picocli:picocli:$picocli_version'
+    annotationProcessor 'info.picocli:picocli-codegen:$picocli_version'
 
     // Gson:
     implementation 'com.google.code.gson:gson:2.9.0'
