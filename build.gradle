@@ -29,8 +29,8 @@ dependencies {
 
     // picocli:
     def picocli_version = "4.7.3"
-    implementation 'info.picocli:picocli:$picocli_version'
-    annotationProcessor 'info.picocli:picocli-codegen:$picocli_version'
+    implementation "info.picocli:picocli:$picocli_version"
+    annotationProcessor "info.picocli:picocli-codegen:$picocli_version"
 
     // Gson:
     implementation 'com.google.code.gson:gson:2.9.0'
