@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
-    id "io.freefair.lombok" version "6.1.0-m3"
+    id "io.freefair.lombok" version "6.6.3"
 }
 
 group = 'voruti'
@@ -15,15 +15,17 @@ repositories {
 
 dependencies {
     // SLF4J as a facade over Log4j2 required dependencies
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.17.2'
+    def log4j_version = "2.20.0"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4j_version
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j_version
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j_version
 
     // Lombok:
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+    def lombok_version = "1.18.26"
+    compileOnly 'org.projectlombok:lombok:$lombok_version'
+    annotationProcessor 'org.projectlombok:lombok:$lombok_version'
+    testCompileOnly 'org.projectlombok:lombok:$lombok_version'
+    testAnnotationProcessor 'org.projectlombok:lombok:$lombok_version'
 
     // picocli:
     def picocli_version = "4.7.3"
