@@ -33,8 +33,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
 
     // JUnit 5:
-    testImplementation(platform('org.junit:junit-bom:5.9.3'))
-    testImplementation('org.junit.jupiter:junit-jupiter:5.9.3')
+    def junit_version = "5.9.3"
+    testImplementation(platform('org.junit:junit-bom:$junit_version'))
+    testImplementation('org.junit.jupiter:junit-jupiter:$junit_version')
 }
 
 compileJava {
