@@ -28,7 +28,7 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:$lombok_version"
 
     // picocli:
-    def picocli_version = "4.7.4"
+    def picocli_version = "4.7.5"
     implementation "info.picocli:picocli:$picocli_version"
     annotationProcessor "info.picocli:picocli-codegen:$picocli_version"
 
