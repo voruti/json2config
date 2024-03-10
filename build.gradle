@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     // SLF4J as a facade over Log4j2 required dependencies
-    def log4j_version = "2.23.0"
+    def log4j_version = "2.23.1"
     implementation "org.apache.logging.log4j:log4j-api:$log4j_version"
     implementation "org.apache.logging.log4j:log4j-core:$log4j_version"
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j_version"
