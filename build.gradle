@@ -21,7 +21,7 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j_version"
 
     // Lombok:
-    def lombok_version = "1.18.34"
+    def lombok_version = "1.18.36"
     compileOnly "org.projectlombok:lombok:$lombok_version"
     annotationProcessor "org.projectlombok:lombok:$lombok_version"
     testCompileOnly "org.projectlombok:lombok:$lombok_version"
