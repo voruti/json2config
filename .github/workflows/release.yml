@@ -11,7 +11,7 @@ jobs:
     outputs:
       on_main: ${{ steps.contains_tag.outputs.retval }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: rickstaa/action-contains-tag@fix_action_retval
@@ -28,7 +28,7 @@ jobs:
 
       # --- from gradle.yml ---
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set up JDK 11
