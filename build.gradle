@@ -33,7 +33,7 @@ dependencies {
     annotationProcessor "info.picocli:picocli-codegen:$picocli_version"
 
     // Gson:
-    implementation 'com.google.code.gson:gson:2.13.1'
+    implementation 'com.google.code.gson:gson:2.13.2'
 
     // JUnit 5:
     def junit_version = "5.11.4"
