@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.13.2'
 
     // JUnit 5:
-    def junit_version = "5.11.4"
+    def junit_version = "5.14.2"
     testImplementation(platform("org.junit:junit-bom:$junit_version"))
     testImplementation("org.junit.jupiter:junit-jupiter:$junit_version")
 }
